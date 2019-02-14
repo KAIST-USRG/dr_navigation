@@ -1,0 +1,11 @@
+obstacle_range: 10.0
+raytrace_range: 10.5
+#footprint: [[x0, y0], [x1, y1], ... [xn, yn]]
+robot_radius: 1.0
+inflation_radius: 0.20
+
+#observation_sources: point_cloud_sensor
+observation_sources: velodyne_2d
+
+#point_cloud_sensor: {sensor_frame: horizontal_laser_link, data_type: PointCloud2, topic: velodyne_points, marking: true, clearing: true}
+velodyne_2d: {sensor_frame: horizontal_laser_link, data_type: PointCloud2, topic: velodyne_points, marking: true, clearing: true}

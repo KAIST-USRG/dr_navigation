@@ -1,10 +1,8 @@
 <launch>
 
   <param name="/use_sim_time" value="false"/>
-  <node name="map_server" pkg="map_server" type="map_server" args="$(find dr_2dnav)/map/mymap.yaml"/>
-
-  <node pkg="tf" type="static_transform_publisher" name="laser_link_broadcaster" args="0 0 0.9 0 0 0 base_link horizontal_laser_link 50" />
   <node pkg="tf" type="static_transform_publisher" name="front_link_broadcaster" args="0 0 0 1.57 0 0 base_link front_link 50" />
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find dr_2dnav)/map/mymap2.yaml"/>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find dr_2dnav)/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
@@ -13,5 +11,7 @@
     <rosparam file="$(find dr_2dnav)/global_costmap_params.yaml" command="load" /> 
     <rosparam file="$(find dr_2dnav)/base_local_planner_params.yaml" command="load" />
   </node>
+
+  <node name="move_base_rviz" pkg="rviz" type="rviz" args="-d $(find dr_2dnav)/rviz/dr_2dnav_sim.rviz"/>
 
 </launch> 

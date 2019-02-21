@@ -1,0 +1,15 @@
+<launch>
+
+  <!-- Sensors -->
+  <!-- Should chmod 777 /dev/ttyACM0 115200 for imu -->
+  <include file="$(find velodyne_pointcloud)/launch/32e_points.launch"/>
+  <include file="$(find imu_3dm_gx4)/launch/imu.launch"/>
+  <node pkg="topic_tools" type="relay" name="imu_relay" args="/imu/imu /imu"/>
+
+  <!-- Cartographer -->
+  <!-- Should source devel_isolated/setup.bash on catkin_carto_ws -->
+  <include file="$(find cartographer_ros)/launch/dr_2d_localization.launch">
+    <arg name="load_state_filename" value="/home/usrg/Desktop/MAP/KI_2f.bag.pbstream"/>
+  </include>
+
+</launch>

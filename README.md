@@ -4,6 +4,7 @@
 2. sudo chmod 777 /dev/ttyACM0 /dev/ttyUSB0
 3. roslaunch dr_2dnav dr_configurations.launch
 4. roslaunch dr_2dnav move_base.launch
+5. rosrun DR_Cont dr_control
 
 ## Using rosbag
 1. rosbag play --clock <bag_file.bag> 

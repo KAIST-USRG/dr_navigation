@@ -23,3 +23,6 @@
 - [Running Cartographer ROS on your own bag](https://google-cartographer-ros.readthedocs.io/en/latest/your_bag.html)
 - [Github issue: Pure Localization Demo 2D #1122](https://github.com/googlecartographer/cartographer_ros/issues/1122)
 - [Github issue: cannot switch to pure localization #1015](https://github.com/googlecartographer/cartographer_ros/issues/1015)
+
+## Navigation Reference
+- [ROS Navigation Tuning Guide](http://kaiyuzheng.me/documents/navguide.pdf)

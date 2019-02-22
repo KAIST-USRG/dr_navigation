@@ -15,3 +15,11 @@
 2. turn on imu
 3. run cartographer for localization
 4. roslaunch dr_2dnav move_base.launch
+
+## Cartographer Reference
+- [Cartographer](https://google-cartographer-ros.readthedocs.io/en/latest/index.html)
+- [Localization only](https://google-cartographer-ros.readthedocs.io/en/latest/going_further.html#localization-only)
+- [Pure Localization in a Given Map](https://google-cartographer-ros.readthedocs.io/en/latest/tuning.html)
+- [Running Cartographer ROS on your own bag](https://google-cartographer-ros.readthedocs.io/en/latest/your_bag.html)
+- [Github issue: Pure Localization Demo 2D #1122](https://github.com/googlecartographer/cartographer_ros/issues/1122)
+- [Github issue: cannot switch to pure localization #1015](https://github.com/googlecartographer/cartographer_ros/issues/1015)

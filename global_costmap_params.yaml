@@ -7,4 +7,4 @@ global_costmap:
   width: 100
   height: 100
 
-  inflation_radius: 0.7
+  inflation_radius: 1.0

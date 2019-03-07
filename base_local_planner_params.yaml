@@ -6,7 +6,7 @@ oscillation_distance: 0.8
 base_local_planner: base_local_planner/TrajectoryPlannerROS
 
 TrajectoryPlannerROS:
-  controller_frequency: 10
+  controller_frequency: 5
 
   max_vel_x: 0.25
   min_vel_x: 0.08

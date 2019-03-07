@@ -8,7 +8,7 @@
 
   <!-- Cartographer -->
   <!-- Should source devel_isolated/setup.bash on catkin_carto_ws -->
-  <include file="$(find cartographer_ros)/launch/dr_2d_localization.launch">
+  <include file="$(find dr_2dnav)/launch/dr_2d_localization.launch">
     <arg name="load_state_filename" value="$(find dr_2dnav)/pbstream/KI_2f.bag.pbstream"/>
   </include>
 

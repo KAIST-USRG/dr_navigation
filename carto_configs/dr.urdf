@@ -14,7 +14,7 @@
   limitations under the License.
 -->
 
-<robot name="msckf">
+<robot name="dr">
   <material name="orange">
     <color rgba="1.0 0.5 0.2 1" />
   </material>

@@ -4,7 +4,11 @@
     textfile="$(find dr_2dnav)/carto_configs/dr.urdf" />
 
   <node name="robot_state_publisher" pkg="robot_state_publisher"
-    type="robot_state_publisher" />
+    type="robot_state_publisher" >
+    <param name="publish_frequency" value="20" />
+    <param name="ignore_timestamp" value="false" />
+    <param name="use_tf_static" value="false" />
+  </node> 
 
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="

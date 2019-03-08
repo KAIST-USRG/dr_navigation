@@ -1,4 +1,4 @@
-#controller_frequency: 5
+controller_frequency: 10
 controller_patience: 15.0
 oscillation_timeout: 10.0
 oscillation_distance: 0.8
@@ -6,7 +6,7 @@ oscillation_distance: 0.8
 base_local_planner: base_local_planner/TrajectoryPlannerROS
 
 TrajectoryPlannerROS:
-  controller_frequency: 5
+#  controller_frequency: 5
 
   max_vel_x: 0.25
   min_vel_x: 0.08
@@ -14,7 +14,7 @@ TrajectoryPlannerROS:
   min_in_place_vel_theta: 0.4
 
   #sim_time: 5.0
-  sim_time: 2.0
+  sim_time: 4.0
 
   acc_lim_theta: 2.0
   acc_lim_x: 2.0
@@ -23,5 +23,6 @@ TrajectoryPlannerROS:
   holonomic_robot: false
   meter_scoring: true
 
-  xy_goal_tolerance: 0.2
-  yaw_goal_tolerance: 0.3491
+  xy_goal_tolerance: 0.6
+  #yaw_goal_tolerance: 0.3491
+  yaw_goal_tolerance: 1.5

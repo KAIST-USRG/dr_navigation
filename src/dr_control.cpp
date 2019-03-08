@@ -47,7 +47,6 @@ void writeControlcmd(bool _estop, double _left_vel, double _right_vel) {
 
 
 void poseCallback(const geometry_msgs::Twist::ConstPtr& twist_msg) {
-  int default_vel = 5;
   double rotate_speed = 3;
 
   double angular_vel = twist_msg->angular.z;
@@ -67,23 +66,23 @@ void poseCallback(const geometry_msgs::Twist::ConstPtr& twist_msg) {
   }
   else if(linear_vel == 0. && angular_vel == 0.) {
     ROS_INFO("E-stop");
-    writeControlcmd(true, 0.0, 0.0);
-    writeControlcmd(true, 0.0, 0.0);
-    writeControlcmd(true, 0.0, 0.0);
+    for(int i = 0; i < 100; i++) {
+      writeControlcmd(true, 0.0, 0.0);
+    }
   }
   else if(linear_vel == 0. && angular_vel != 0.) { // rotate
     if(angular_vel < 0.) {
       ROS_INFO("right turn");
-      writeControlcmd(false, 0.1, 2);
+      writeControlcmd(false, 0.1, 2.5);
     }
     else {
       ROS_INFO("left turn");
-      writeControlcmd(false, 2, 0.1);
+      writeControlcmd(false, 2.5, 0.1);
     }
   }
   else {
-    right_vel = (2*linear_vel + angular_vel*0.8*Robot_Wheel_base)/(2.0);
-    left_vel = (2*linear_vel - angular_vel*0.8*Robot_Wheel_base)/(2.0);
+    right_vel = (2*linear_vel + angular_vel*1.0*Robot_Wheel_base)/(2.0);
+    left_vel = (2*linear_vel - angular_vel*1.0*Robot_Wheel_base)/(2.0);
     //right_vel = (2*linear_vel + angular_vel*Robot_Wheel_base)/(2.0);
     //left_vel = (2*linear_vel - angular_vel*Robot_Wheel_base)/(2.0);
 
@@ -93,12 +92,12 @@ void poseCallback(const geometry_msgs::Twist::ConstPtr& twist_msg) {
     RperL_ratio = right_motor_speed / left_motor_speed;
 
     if(RperL_ratio > 1) { //left_turn 
-        right_motor_speed = 2.0;
+        right_motor_speed = 2.5;
         left_motor_speed = 0.1;
     }
     else if(RperL_ratio < 0.1) { // right turn
         right_motor_speed = 0.1;
-        left_motor_speed = 2.0;
+        left_motor_speed = 2.5;
     }
 
     ROS_INFO_STREAM("left motor:" << left_motor_speed << " right motor:" << right_motor_speed);

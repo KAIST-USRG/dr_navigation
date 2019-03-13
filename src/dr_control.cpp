@@ -3,127 +3,50 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Twist.h>
 #include <serial/serial.h>
+#include <string>
 
-#define INDOOR false
-#define OUTDOOR !(INDOOR)
+class DRControl {
+private:
+  ros::NodeHandle nh;
+  ros::NodeHandle nh_;
+  ros::Subscriber twist_sub_;
 
-#define CMD_MIN 1100
-#define CMD_MAX 1940
-#define CMD_MID 1520
+  serial::Serial dr_serial_;
+  std::string port_;
+  int baud_;
+  int timeout_;
 
-serial::Serial ser;
+public:
+  DRControl() {
+    nh_ = ros::NodeHandle("~");
+    nh_.param<std::string>("port", port_, "/dev/ttyACM0");
+    nh_.param("baudrate", baud_, 115200);
+    nh_.param("timeout", timeout_, 1000);
 
-bool ESTOP_flg = false;
+    twist_sub_ = nh.subscribe<geometry_msgs::Twist> ("cmd_vel", 10, &DRControl::twistCallback, this);
 
-double Robot_Wheel_base = 0.47; // [m]
-double Robot_wheel_Radius = 0.2; // [m]
-
-void writeControlcmd(bool _estop, double _left_vel, double _right_vel) {
-  static int i = 0;
-  std::string UART_MSG_LEFT = "000000";
-  std::string UART_MSG_RIGHT = "000000";
-
-  if(_estop == true) {
-    UART_MSG_LEFT[0] = 'U';
-    UART_MSG_LEFT[1] = 'S';
-    UART_MSG_LEFT[2] = 0x01; // left motor
-    UART_MSG_LEFT[3] = 0x03; // direction : forward (2: backward, 3: break, 4: torque off)
-    UART_MSG_LEFT[4] = int(0); // velocity
-    UART_MSG_LEFT[5] = 0x00; // checksum(now unavailable, set 0)
-
-    ser.write(UART_MSG_LEFT);
+    dr_serial_.setPort(port_);
+    dr_serial_.setBaudrate(baud_);
+    serial::Timeout timeout = serial::Timeout::simpleTimeout(timeout_);
+    dr_serial_.setTimeout(timeout);
   }
-  else {
-    UART_MSG_LEFT[0] = 'U';
-    UART_MSG_LEFT[1] = 'S';
-    UART_MSG_LEFT[2] = 0x00; // left motor
-    UART_MSG_LEFT[3] = int(_left_vel*10); // direction : forward (2: backward, 3: break, 4: torque off)
-    UART_MSG_LEFT[4] = int(_right_vel*10); // velocity
-    UART_MSG_LEFT[5] = 0x00; // checksum(now unavailable, set 0)
 
-    ser.write(UART_MSG_LEFT);
+  void twistCallback(const geometry_msgs::Twist::ConstPtr& twist_msg) {
+    std::string command_string;
+    //command_string = "$CVW,200,0,\r\n";
+    command_string = "$CVW," + std::to_string(int(twist_msg->linear.x)*1000)
+                       + "," + std::to_string(int(twist_msg->angular.z)*1000) + "\r\n";
+    ROS_INFO_STREAM(command_string);
+    //dr_serial_.write(command_string);
   }
-}
-
-
-void poseCallback(const geometry_msgs::Twist::ConstPtr& twist_msg) {
-  double rotate_speed = 3;
-
-  double angular_vel = twist_msg->angular.z;
-  double linear_vel = twist_msg->linear.x;
-
-  double right_vel = 0;
-  double left_vel = 0;
-
-  double right_motor_speed = 0;
-  double left_motor_speed = 0;
-  
-  double RperL_ratio = 0.0;
-
-  if(linear_vel < 0) {
-    ROS_INFO("move rear");
-    writeControlcmd(false, 0.1, rotate_speed);
-  }
-  else if(linear_vel == 0. && angular_vel == 0.) {
-    ROS_INFO("E-stop");
-    for(int i = 0; i < 100; i++) {
-      writeControlcmd(true, 0.0, 0.0);
-    }
-  }
-  else if(linear_vel == 0. && angular_vel != 0.) { // rotate
-    if(angular_vel < 0.) {
-      ROS_INFO("right turn");
-      writeControlcmd(false, 0.1, 2.5);
-    }
-    else {
-      ROS_INFO("left turn");
-      writeControlcmd(false, 2.5, 0.1);
-    }
-  }
-  else {
-    right_vel = (2*linear_vel + angular_vel*1.0*Robot_Wheel_base)/(2.0);
-    left_vel = (2*linear_vel - angular_vel*1.0*Robot_Wheel_base)/(2.0);
-    //right_vel = (2*linear_vel + angular_vel*Robot_Wheel_base)/(2.0);
-    //left_vel = (2*linear_vel - angular_vel*Robot_Wheel_base)/(2.0);
-
-    right_motor_speed = right_vel / Robot_wheel_Radius;
-    left_motor_speed = left_vel / Robot_wheel_Radius;
-
-    RperL_ratio = right_motor_speed / left_motor_speed;
-
-    if(RperL_ratio > 1) { //left_turn 
-        right_motor_speed = 2.5;
-        left_motor_speed = 0.1;
-    }
-    else if(RperL_ratio < 0.1) { // right turn
-        right_motor_speed = 0.1;
-        left_motor_speed = 2.5;
-    }
-
-    ROS_INFO_STREAM("left motor:" << left_motor_speed << " right motor:" << right_motor_speed);
-    writeControlcmd(false, right_motor_speed, left_motor_speed);
-  }
-}
+};
 
 int main(int argc, char* argv[])
 {
   ros::init(argc, argv, "dr_control");
-  ros::NodeHandle nh;
-  ros::Subscriber twist_sub = nh.subscribe("/cmd_vel", 1, poseCallback);
-  ros::Rate loop_rate(10);
-  
-  ser.setPort("/dev/ttyUSB0");
-  ser.setBaudrate(9600);
-  serial::Timeout to = serial::Timeout::simpleTimeout(1000);
-  ser.setTimeout(to);
-  ser.open();
+  DRControl dr_control;
 
-  ROS_INFO("BASE CONTROL PKG Started...");
-
-  while(ros::ok()) {
-    ros::spinOnce();
-    loop_rate.sleep();
-  }
+  ros::spin();
 
   return 0;
 }

@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg="dr_control" name="dr_control" type="dr_control" output="screen">
+    <params name="port" type="string" value="/dev/ttyUSB0"/>
+    <params name="baudrate" type="int" value="115200"/>
+    <params name="timeout" type="int" value="1000"/>
+  </node>
+
+</launch>

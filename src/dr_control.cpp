@@ -19,7 +19,7 @@ private:
 public:
   DRControl() {
     nh_ = ros::NodeHandle("~");
-    nh_.param<std::string>("port", port_, "/dev/ttyACM0");
+    nh_.param<std::string>("port", port_, "/dev/ttyUSB0");
     nh_.param("baudrate", baud_, 115200);
     nh_.param("timeout", timeout_, 1000);
 
@@ -29,15 +29,16 @@ public:
     dr_serial_.setBaudrate(baud_);
     serial::Timeout timeout = serial::Timeout::simpleTimeout(timeout_);
     dr_serial_.setTimeout(timeout);
+    dr_serial_.open();
   }
 
   void twistCallback(const geometry_msgs::Twist::ConstPtr& twist_msg) {
     std::string command_string;
     //command_string = "$CVW,200,0,\r\n";
-    command_string = "$CVW," + std::to_string(int(twist_msg->linear.x)*1000)
-                       + "," + std::to_string(int(twist_msg->angular.z)*1000) + "\r\n";
+    command_string = "$CVW," + std::to_string(int(twist_msg->linear.x*1000))
+                       + "," + std::to_string(int(twist_msg->angular.z*1000)) + "\r\n";
     ROS_INFO_STREAM(command_string);
-    //dr_serial_.write(command_string);
+    dr_serial_.write(command_string);
   }
 };
 

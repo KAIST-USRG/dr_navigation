@@ -8,10 +8,10 @@ base_local_planner: base_local_planner/TrajectoryPlannerROS
 TrajectoryPlannerROS:
 #  controller_frequency: 5
 
-  max_vel_x: 0.25
-  min_vel_x: 0.08
-  max_vel_theta: 0.5
-  min_in_place_vel_theta: 0.4
+  max_vel_x: 0.6
+  min_vel_x: 0.02
+  max_vel_theta: 0.4
+  min_in_place_vel_theta: 0.3
 
   #sim_time: 5.0
   sim_time: 4.0

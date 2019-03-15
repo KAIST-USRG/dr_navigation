@@ -5,6 +5,35 @@
 #include <serial/serial.h>
 #include <string>
 
+class LowPassFilter {
+private:
+  double ts_;
+  double tau_;
+  double pre_output_;
+  double output_;
+  double input_;
+  
+public:
+  LowPassFilter() {}
+  LowPassFilter(double ts, double tau):ts_(ts), tau_(tau) {}
+
+  double filter(double input) {
+    input_ = input;
+    output_ = ( tau_ * pre_output_ + ts_ * input_ ) /(tau_ + ts_);
+    pre_output_ = output_;
+
+    return output_;
+  }
+
+  void setTau(double tau) {
+    tau_ = tau;
+  }
+
+  void setTs(double ts) {
+    ts_ = ts;
+  }
+};
+
 class DRControl {
 private:
   ros::NodeHandle nh;
@@ -16,12 +45,33 @@ private:
   int baud_;
   int timeout_;
 
+  LowPassFilter linear_lpf_;
+  double linear_ts_;
+  double linear_tau_;
+  bool linear_LPF_on_;
+
+  LowPassFilter angular_lpf_;
+  double angular_ts_;
+  double angular_tau_;
+  bool angular_LPF_on_;
+
 public:
   DRControl() {
     nh_ = ros::NodeHandle("~");
     nh_.param<std::string>("port", port_, "/dev/ttyUSB0");
     nh_.param("baudrate", baud_, 115200);
     nh_.param("timeout", timeout_, 1000);
+
+    nh_.param("linear_ts", linear_ts_, 0.1);
+    nh_.param("linear_tau", linear_tau_, 0.9);
+    nh_.param("linear_LPF_on", linear_LPF_on_, true);
+
+    nh_.param("angular_ts", angular_ts_, 0.1);
+    nh_.param("angular_tau", angular_tau_, 0.9);
+    nh_.param("angular_LPF_on", angular_LPF_on_, true);
+
+    linear_lpf_ = LowPassFilter(linear_ts_, linear_tau_);
+    angular_lpf_ = LowPassFilter(angular_ts_, angular_tau_);
 
     twist_sub_ = nh.subscribe<geometry_msgs::Twist> ("cmd_vel", 10, &DRControl::twistCallback, this);
 
@@ -34,11 +84,16 @@ public:
 
   void twistCallback(const geometry_msgs::Twist::ConstPtr& twist_msg) {
     std::string command_string;
-    //command_string = "$CVW,200,0,\r\n";
-    command_string = "$CVW," + std::to_string(int(twist_msg->linear.x*1000))
-                       + "," + std::to_string(int(twist_msg->angular.z*1000)) + "\r\n";
-    ROS_INFO_STREAM(command_string);
+
+    double linear_speed = linear_lpf_.filter(twist_msg->linear.x);
+    double angular_speed = angular_lpf_.filter(twist_msg->angular.z);
+
+    command_string = "$CVW," + std::to_string(int(linear_speed*1000))
+                       + "," + std::to_string(int(angular_speed*1000)) + "\r\n";
     dr_serial_.write(command_string);
+
+    ROS_INFO_STREAM("$CVW," + std::to_string(int(linear_speed*1000))
+                       + "," + std::to_string(int(angular_speed*1000)) );
   }
 };
 

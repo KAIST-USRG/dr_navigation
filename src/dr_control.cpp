@@ -45,6 +45,8 @@ private:
   int baud_;
   int timeout_;
 
+  bool reverse_x_direction_;
+
   LowPassFilter linear_lpf_;
   double linear_ts_;
   double linear_tau_;
@@ -61,6 +63,8 @@ public:
     nh_.param<std::string>("port", port_, "/dev/ttyUSB0");
     nh_.param("baudrate", baud_, 115200);
     nh_.param("timeout", timeout_, 1000);
+
+    nh_.param("reverse_x_direction", reverse_x_direction_, false);
 
     nh_.param("linear_ts", linear_ts_, 0.1);
     nh_.param("linear_tau", linear_tau_, 0.9);
@@ -94,6 +98,8 @@ public:
 
     double linear_speed = linear_lpf_.filter(twist_msg->linear.x);
     double angular_speed = angular_lpf_.filter(twist_msg->angular.z);
+
+    if(reverse_x_direction_) linear_speed *= -1;
 
     command_string = "$CVW," + std::to_string(int(linear_speed*1000))
                        + "," + std::to_string(int(angular_speed*1000)) + "\r\n";

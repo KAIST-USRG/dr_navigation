@@ -5,6 +5,8 @@
     <params name="baudrate" type="int" value="115200"/>
     <params name="timeout" type="int" value="1000"/>
 
+    <params name="reverse_x_direction" type="bool" value="false"/>
+
     <params name="linear_ts" type="double" value="0.1"/>
     <params name="linear_tau" type="double" value="0.9"/>
     <params name="linear_LPF_on" type="bool" value="true"/>

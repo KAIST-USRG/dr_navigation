@@ -60,7 +60,7 @@ private:
 public:
   DRControl() {
     nh_ = ros::NodeHandle("~");
-    nh_.param<std::string>("port", port_, "/dev/ttyUSB0");
+    nh_.param<std::string>("port", port_, "/dev/ttyUSB1");
     nh_.param("baudrate", baud_, 115200);
     nh_.param("timeout", timeout_, 1000);
 

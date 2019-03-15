@@ -4,6 +4,14 @@
     <params name="port" type="string" value="/dev/ttyUSB0"/>
     <params name="baudrate" type="int" value="115200"/>
     <params name="timeout" type="int" value="1000"/>
+
+    <params name="linear_ts" type="double" value="0.1"/>
+    <params name="linear_tau" type="double" value="0.9"/>
+    <params name="linear_LPF_on" type="bool" value="true"/>
+
+    <params name="angular_ts" type="double" value="0.1"/>
+    <params name="angular_tau" type="double" value="0.9"/>
+    <params name="angular_LPF_on" type="bool" value="true"/>
   </node>
 
 </launch>

@@ -79,7 +79,14 @@ public:
     dr_serial_.setBaudrate(baud_);
     serial::Timeout timeout = serial::Timeout::simpleTimeout(timeout_);
     dr_serial_.setTimeout(timeout);
-    dr_serial_.open();
+
+    try {
+      dr_serial_.open();
+    }
+    catch(serial::IOException ex) {
+      ROS_ERROR("Serial Port Closed. Turn off the node.");
+      exit(-1);
+    }
   }
 
   void twistCallback(const geometry_msgs::Twist::ConstPtr& twist_msg) {

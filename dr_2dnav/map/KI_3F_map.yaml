@@ -1,0 +1,9 @@
+image: KI_3F_map.pgm
+resolution: 0.050000
+origin: [-54.159912, -55.623669, 0.000000]
+negate: 0
+#occupied_thresh: 0.65
+occupied_thresh: 0.15
+#free_thresh: 0.196
+free_thresh: 0.05
+

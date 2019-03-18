@@ -1,0 +1,4 @@
+base_global_planner: navfn/NavfnROS
+
+NavfnROS:
+  default_toerance: 0.5

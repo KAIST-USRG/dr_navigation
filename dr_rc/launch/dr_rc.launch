@@ -1,0 +1,22 @@
+<launch>
+  <node pkg="dr_rc" name="dr_rc" type="dr_rc" output="screen">
+    <param name="port" type="string" value="/dev/ttyUSB0" />
+    <param name="baudrate" type="int" value="921600" />
+  </node>
+
+  <node pkg="dr_control" name="dr_control" type="dr_control" output="screen">
+    <param name="port" type="string" value="/dev/ttyUSB1"/>
+    <param name="baudrate" type="int" value="115200"/>
+    <param name="timeout" type="int" value="1000"/>
+
+    <param name="reverse_x_direction" type="bool" value="false"/>
+
+    <param name="linear_ts" type="double" value="0.1"/>
+    <param name="linear_tau" type="double" value="0.9"/>
+    <param name="linear_LPF_on" type="bool" value="true"/>
+
+    <param name="angular_ts" type="double" value="0.1"/>
+    <param name="angular_tau" type="double" value="0.9"/>
+    <param name="angular_LPF_on" type="bool" value="true"/>
+  </node>
+</launch>

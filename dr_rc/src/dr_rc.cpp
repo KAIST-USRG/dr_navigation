@@ -31,11 +31,30 @@ std_msgs::Float32MultiArray RX_FCC_Data;
 geometry_msgs::Twist Remote2Twist(int _throt, int _rud, int _mode) // _mode (1100: auto / 1520: manual / 1940: estop) // Throttle range : 1115~1940 // Rudder : 1100~1940
 {
 	geometry_msgs::Twist tmp;
-	tmp.angular.z = double(_rud-1520) / double(1940-1520) * -0.3; 
-	tmp.linear.x = double(_throt-1115) / double(1940-1115);
+	if(_mode < 1200) {
+	  tmp.angular.z = double(_rud-1520) / double(1940-1520) * -0.3; 
+	  tmp.linear.x = double(_throt-1115) / double(1940-1115);
 
-	if(tmp.linear.x < 0)
-		tmp.linear.x = 0;
+	  if(tmp.linear.x < 0)
+	    tmp.linear.x = 0;
+
+	  ROS_INFO("forward");
+	}
+	else if(_mode < 1600) {
+	  tmp.angular.z = double(_rud-1520) / double(1940-1520) * -0.3; 
+	  tmp.linear.x = -(double(_throt-1115) / double(1940-1115));
+
+	  if(tmp.linear.x > 0)
+	    tmp.linear.x = 0;
+
+	  ROS_INFO("backward");
+	}
+	else {
+	  tmp.angular.z = 0;
+	  tmp.linear.x = 0;
+	  ROS_INFO("E-STOP");
+	}
+
 
 	return tmp;
 }

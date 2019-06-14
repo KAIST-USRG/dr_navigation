@@ -45,7 +45,7 @@ $ source devel/setup.bash
 $ catkin_make
 ```
 
-## Launch
+## Launch dr_navigation example
 ```
 $ sudo chmod 777 /dev/ttyACM0 /dev/ttyUSB0
 $ roslaunch dr_2dnav dr_configuration.launch

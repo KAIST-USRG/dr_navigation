@@ -1,5 +1,9 @@
 <launch>
 
+  <!-- Map -->
+  <node name="map_server" pkg="map_server" type="map_server" 
+                      args="$(find dr_2dnav)/map/KI_1F/map3.yaml"/>
+
   <!-- Sensors -->
   <!-- Should chmod 777 /dev/ttyACM0 115200 for imu -->
   <include file="$(find dr_2dnav)/launch/32e_points.launch"/>

@@ -55,6 +55,7 @@
   <exec_depend>amcl</exec_depend>
   <exec_depend>velodyne</exec_depend>
   <exec_depend>microstrain_mips</exec_depend>
+  <exec_depend>gmapping</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

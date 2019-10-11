@@ -9,7 +9,6 @@ project(dr_2dnav)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   move_base
-  velodyne_driver
 )
 
 ## System dependencies are found with CMake's conventions

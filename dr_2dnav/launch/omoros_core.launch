@@ -23,7 +23,7 @@
          args="0.0  0.0 1.2 -1.57 0.0 0.0 /base_link /velodyne 40" />
 
    <node pkg="tf" type="static_transform_publisher" name="base_link_to_gx5_link" 
-         args="0.0  0.0 0.91 0.0 0.0 0.0 /base_link /gx5_link 40" />
+         args="0.0  0.0 0.88 0.0 0.0 0.0 /base_link /gx5_link 40" />
       
    <node pkg="tf" type="static_transform_publisher" name="base_link_to_wheel_left_link" 
          args="0.0  0.29 0.11 0.0 0.0 0.0 /base_link /wheel_left_link 40" />

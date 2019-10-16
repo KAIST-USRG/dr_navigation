@@ -140,4 +140,5 @@
   </node>
 
   <node pkg="hdl_graph_slam" type="map2odom_publisher.py" name="map2odom_publisher" />
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find dr_2dnav)/rviz/hdl_slam.rviz" />
 </launch>

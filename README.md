@@ -2,6 +2,7 @@
 
 ## Prerequirements
 ### cartographer_ros
+~~
 Download cartographer on cartographer workspace.
 ```
 $ sudo apt-get update
@@ -29,6 +30,7 @@ Compile
 $ cd ~/cartographer_ws
 $ catkin_make_isolated --install --use-ninja
 ```
+~~
 
 ## Build dr_navigation
 Clone github repository.

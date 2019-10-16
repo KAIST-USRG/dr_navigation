@@ -1,9 +1,8 @@
 # dr_navigation
 
 ## Prerequirements
-### cartographer_ros
-~~
-Download cartographer on cartographer workspace.
+~~### cartographer_ros~~
+~~Download cartographer on cartographer workspace.~~
 ```
 $ sudo apt-get update
 $ sudo apt-get install -y python-wstool python-rosdep ninja-build
@@ -30,7 +29,7 @@ Compile
 $ cd ~/cartographer_ws
 $ catkin_make_isolated --install --use-ninja
 ```
-~~
+
 
 ## Build dr_navigation
 Clone github repository.

@@ -42,4 +42,5 @@
         <param name="init_ori_y" value="0.0" />
         <param name="init_ori_z" value="0.0" />
     </node>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find dr_2dnav)/rviz/hdl_localization.rviz" />
 </launch>

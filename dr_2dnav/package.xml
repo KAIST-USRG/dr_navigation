@@ -57,11 +57,14 @@
   <exec_depend>microstrain_mips</exec_depend>
   <exec_depend>gmapping</exec_depend>
   <exec_depend>hdl_graph_slam</exec_depend>
+  <exec_depend>laser_filters</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
+    <mbf_costmap_core plugin="${find dr_2dnav}/mbf_plugin.xml" />
+  </export>
 
   </export>
 </package>

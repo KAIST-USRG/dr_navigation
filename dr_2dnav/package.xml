@@ -66,5 +66,4 @@
     <mbf_costmap_core plugin="${find dr_2dnav}/mbf_plugin.xml" />
   </export>
 
-  </export>
 </package>

@@ -1,7 +1,7 @@
 <launch>
   <!-- Sensors -->
-  <!-- Should chmod 777 /dev/ttyACM0 115200 for imu -->
   <include file="$(find dr_2dnav)/launch/32e_points.launch"/>
+  <include file="$(find dr_2dnav)/launch/box_filter_droid_example.launch"/>
   <!--include file="$(find dr_2dnav)/launch/imu.launch"/-->
   <include file="$(find dr_2dnav)/launch/omoros_core.launch" />
 </launch>

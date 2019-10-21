@@ -1,6 +1,7 @@
 <launch>  
   <node name="map_server" pkg="map_server" type="map_server" 
-                      args="$(find dr_2dnav)/map/cityhall_1F/cityhall.yaml"/>
+                    args="$(find dr_2dnav)/map/KI_1F/map3.yaml"/>
+                    <!--  args="$(find dr_2dnav)/map/cityhall_1F/cityhall.yaml"/-->
 
   <include file="$(find dr_2dnav)/launch/amcl.launch"/>
 
@@ -10,16 +11,16 @@
     <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
     <remap from="odom" to="$(arg odom_topic)"/>
 
-    <!--param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /-->
-    <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS" />
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <!--param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS" /-->
     <rosparam file="$(find dr_2dnav)/param/costmap_common_params_r1.yaml" 
 	    command="load" ns="global_costmap" />
     <rosparam file="$(find dr_2dnav)/param/costmap_common_params_r1.yaml" 
 	    command="load" ns="local_costmap" />
     <rosparam file="$(find dr_2dnav)/param/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find dr_2dnav)/param/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find dr_2dnav)/param/move_base_params.yaml" command="load" />
-    <!--rosparam file="$(find dr_2dnav)/param/dwa_local_planner_params_r1.yaml" command="load" /-->
+    <!--rosparam file="$(find dr_2dnav)/param/move_base_params.yaml" command="load" /-->
+    <rosparam file="$(find dr_2dnav)/param/dwa_local_planner_params_r1.yaml" command="load" />
     <rosparam file="$(find dr_2dnav)/param/base_local_planner_params.yaml" command="load" />
   </node>
 

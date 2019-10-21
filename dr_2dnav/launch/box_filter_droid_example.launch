@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen" name="laser_filter">
+    <remap from="scan" to="scan_raw" />
+    <remap from="scan_filtered" to="scan" />
+    <rosparam command="load" file="$(find dr_2dnav)/param/box_filter_droid.yaml" />
+  </node>
+</launch>

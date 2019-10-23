@@ -5,7 +5,10 @@
 
   <!-- Static tfs -->
   <node pkg="tf" type="static_transform_publisher" name="tf_imu_ned_enu"
-        args="0 0 0 1.5708 0 3.1416 gx5_link imu_link 10" output="screen"/>
+        args="0 0 0 0 0 0 gx5_link imu_link 10" output="screen"/>
+
+  <node pkg="tf" type="static_transform_publisher" name="tf_gps_link"
+        args="0 0 1 0 0 0 base_link gps 10" output="screen"/>
 
   <!-- Transforms NED IMU data pulished in frame imu_link_ned on topics /imu/data_ned and /imu/mag_ned to
    ENU data in frame imu_link published on /imu/data_enu and /imu/mag_enu -->

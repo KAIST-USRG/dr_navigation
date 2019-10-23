@@ -60,6 +60,7 @@
   <exec_depend>gmapping</exec_depend>
   <exec_depend>hdl_graph_slam</exec_depend>
   <exec_depend>laser_filters</exec_depend>
+  <exec_depend>imu_transformer</exec_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

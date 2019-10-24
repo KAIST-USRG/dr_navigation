@@ -12,17 +12,18 @@
 
 <launch>
 
-  <rosparam command="load" file="$(find dr_2dnav)/param/dual_ekf_navsat_backup.yaml" />
+  <rosparam command="load" file="$(find dr_2dnav)/param/dual_ekf_navsat.yaml" />
+  <rosparam command="load" file="$(find dr_2dnav)/param/navsat_transform.yaml" />
 
-  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" />
+  <!--node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" /-->
 
-  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" >
-    <remap from="odometry/filtered" to="odometry/filtered_map"/>
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" clear_params="true">
+    <!--remap from="odometry/filtered" to="odometry/filtered_map"/-->
   </node>
 
   <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true">
     <remap from="imu/data" to="imu_enu/data" />
-    <remap from="odometry/filtered" to="odometry/filtered_map"/>
+    <remap from="odometry/filtered" to="odom"/>
     <remap from="gps/fix" to="ublox_gps/fix"/>
   </node>
 

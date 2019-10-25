@@ -15,7 +15,7 @@ DWAPlannerROS:
   max_rot_vel: 0.5
   min_rot_vel: 0.02
 
-  acc_lim_x: 0.3
+  acc_lim_x: 2.5
   acc_lim_y: 0.0
   acc_lim_th: 3.2
 
@@ -38,8 +38,8 @@ DWAPlannerROS:
   occdist_scale: 0.01
   forward_poit_distance: 0.325
   stop_time_buffer: 0.2
-  scaling_speed: 1
-  max_scaling_factor: 0.1
+  scaling_speed: 0.25
+  max_scaling_factor: 0.2
 
 # Oscillation Prevention Parameters
   oscillation_reset_dist: 0.05

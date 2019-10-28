@@ -1,4 +1,5 @@
 import smach
+import rospy  
 
 from planner_sm import PlannerStateMachine
 

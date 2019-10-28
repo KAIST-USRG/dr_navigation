@@ -1,7 +1,9 @@
 <launch>  
-  <node name="map_server" pkg="map_server" type="map_server" 
-                     args="$(find dr_2dnav)/map/cityhall_1F/cityhall_2.yaml"/>
+  <!--node name="map_server" pkg="map_server" type="map_server" 
+                     args="$(find dr_2dnav)/map/cityhall_1F/cityhall_2.yaml"/-->
                     <!--args="$(find dr_2dnav)/map/KI_1F/map3.yaml"/-->
+
+  <include file="$(find dr_2dnav)/launch/include/map_server.launch"/>
 
   <include file="$(find dr_2dnav)/launch/include/amcl.launch"/>
 

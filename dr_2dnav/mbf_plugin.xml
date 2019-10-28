@@ -1,6 +1,0 @@
-<library path="<<<library name>>>">
-  <class name="<<<planner name>>>" type="<<<Your planner's class>>>" base_class_type="mbf_costmap_core::CostmapController">
-    <description>
-    </description>
-  </class>
-</library>

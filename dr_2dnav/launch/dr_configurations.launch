@@ -1,7 +1,8 @@
 <launch>
   <!-- Sensors -->
-  <include file="$(find dr_2dnav)/launch/32e_points.launch"/>
-  <include file="$(find dr_2dnav)/launch/box_filter_droid_example.launch"/>
-  <!--include file="$(find dr_2dnav)/launch/imu.launch"/-->
-  <include file="$(find dr_2dnav)/launch/omoros_core.launch" />
+  <include file="$(find dr_2dnav)/launch/include/lidar.launch"/>
+  <include file="$(find dr_2dnav)/launch/include/box_filter_droid_example.launch"/>
+  <!--include file="$(find dr_2dnav)/launch/include/imu.launch"/-->
+  <!--include file="$(find dr_2dnav)/launch/include/gps.launch"/-->
+  <include file="$(find dr_2dnav)/launch/include/omoros_core.launch" />
 </launch>

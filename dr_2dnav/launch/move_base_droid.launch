@@ -3,7 +3,7 @@
                      args="$(find dr_2dnav)/map/cityhall_1F/cityhall_2.yaml"/>
                     <!--args="$(find dr_2dnav)/map/KI_1F/map3.yaml"/-->
 
-  <include file="$(find dr_2dnav)/launch/amcl.launch"/>
+  <include file="$(find dr_2dnav)/launch/include/amcl.launch"/>
 
   <arg name="cmd_vel_topic" default="/cmd_vel" />
   <arg name="odom_topic" default="odom" />

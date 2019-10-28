@@ -17,13 +17,13 @@
   <node pkg="mbf_costmap_nav" type="mbf_costmap_nav" respawn="false" name="move_base_flex" output="screen" launch-prefix="gdb -ex run --args"> 
     <param name="tf_timeout" value="1.5"/>
     <param name="planner_max_retries" value="3"/>
-    <rosparam file="$(find ceres_navigation)/config/planners.yaml" command="load" />
-    <rosparam file="$(find ceres_navigation)/config/controllers.yaml" command="load" />
-    <rosparam file="$(find ceres_navigation)/config/recovery_behaviors.yaml" command="load" />
-    <rosparam file="$(find ceres_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap"/>
-    <rosparam file="$(find ceres_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find ceres_navigation)/config/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find ceres_navigation)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/mbf/planners.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/mbf/controllers.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/mbf/recovery_behaviors.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/mbf/costmap_common_params.yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find dr_2dnav)/param/mbf/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find dr_2dnav)/param/mbf/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/mbf/local_costmap_params.yaml" command="load" />
   </node>
   
   <!-- SMACH Navigation State Machine -->

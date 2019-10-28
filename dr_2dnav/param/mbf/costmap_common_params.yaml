@@ -1,14 +1,13 @@
-global_frame: map
-robot_base_frame: base_footprint
-obstacle_range: 2.5
-raytrace_range: 3.0
-footprint: [[-0.26, 0.27],[0.26,0.27],[0.26,-0.27],[-0.26,-0.27]]
-# robot_radius: ir_of_robot
-inflation_radius: 0.45
+obstacle_range: 3.0
+raytrace_range: 3.5
 
-# uncomment to take in calculations of picco_flexx for the costmap.
-# TODO: use unimplemented filter to take out noise
-observation_sources: sick_tim #pico_flexx
+#footprint: [[-0.5, -0.555], [-0.5, 0.555], [0.5, 0.555], [0.5, -0.555]]
+footprint: [[-0.5, -0.35], [-0.5, 0.35], [0.5, 0.35], [0.5, -0.35]]
+#robot_radius: 0.17
 
-sick_tim: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true}
-# pico_flexx: {sensor_frame: pico_flexx_optical_frame, data_type: PointCloud2, topic: points, marking: true, clearing: true}
+inflation_radius: 0.7
+cost_scaling_factor: 3.0
+
+map_type: costmap
+observation_sources: scan
+scan: {sensor_frame: base_scan, data_type: LaserScan, topic: scan, marking: true, clearing: true}

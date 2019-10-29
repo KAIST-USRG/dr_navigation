@@ -8,12 +8,14 @@ import tf
 
 import actionlib
 from mbf_msgs.msg import ExePathAction
+import mbf_msgs.msg 
 
 def smach_client(path_msg):
-    client = actionlib.SimpleActionClient('mbf', ExePathAction)
+    rospy.loginfo(path_msg)
+    client = actionlib.SimpleActionClient('move_base_flex/exe_path', ExePathAction)
     client.wait_for_server()
     goal = mbf_msgs.msg.ExePathGoal(path = path_msg)
-    client.send_goal = goal
+    client.send_goal(goal)
     client.wait_for_result()
     return client.get_result()
 
@@ -34,7 +36,6 @@ def talker():
         posestamp_msg = PoseStamped()
         pose_msg = Pose()
         value = line.split()
-        rospy.loginfo(value)
         pose_msg.position.x = float(value[0])
         pose_msg.position.y = float(value[1])
         pose_msg.position.z = 0
@@ -45,7 +46,6 @@ def talker():
         posestamp_msg.pose = pose_msg
         posestamp_msg.header = header_msg
         posestamp_list.append(posestamp_msg)
-    rospy.loginfo(posestamp_list)
 
     header_msg.seq = seq
     header_msg.stamp = rospy.Time.now()
@@ -58,7 +58,7 @@ def talker():
 
 if __name__ == '__main__':
     try:
-        rospy.init_node('path_publisher', anonymous=True)
+        rospy.init_node('path_action_client', anonymous=True)
         path_msg = talker()
         result = smach_client(path_msg)
         rospy.loginfo(result)

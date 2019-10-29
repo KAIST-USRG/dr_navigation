@@ -26,27 +26,14 @@ def talker():
         posestamp_msg = PoseStamped()
         pose_msg = Pose()
         value = line.split()
-        #rospy.loginfo(value)
+        rospy.loginfo(value)
         pose_msg.position.x = float(value[0])
         pose_msg.position.y = float(value[1])
-        pose_msg.position.z = float(value[2])
-        #pose_msg.orientation.x = float(value[3])
-        #pose_msg.orientation.y = float(value[4])
-        #pose_msg.orientation.z = float(value[5])
-        #pose_msg.orientation.w = float(value[6])
-        quaternion_original=(float(value[3]),
-                             float(value[4]),
-                             float(value[5]),
-                             float(value[6]))
-        euler = tf.transformations.euler_from_quaternion(quaternion_original)
-        roll = 0
-        pitch = 0
-        yaw   = euler[2]
-        quaternion = tf.transformations.quaternion_from_euler(roll, pitch, yaw)
-        pose_msg.orientation.x = float(quaternion[0])
-        pose_msg.orientation.y = float(quaternion[1])
-        pose_msg.orientation.z = float(quaternion[2])
-        pose_msg.orientation.w = float(quaternion[3])        
+        pose_msg.position.z = 0
+        pose_msg.orientation.x = 0
+        pose_msg.orientation.y = 0
+        pose_msg.orientation.z = float(value[5])
+        pose_msg.orientation.w = float(value[6])
         posestamp_msg.pose = pose_msg
         posestamp_msg.header = header_msg
         posestamp_list.append(posestamp_msg)

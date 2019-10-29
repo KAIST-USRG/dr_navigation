@@ -86,6 +86,7 @@ dwa:
 
   # Oscillation Prevention Parameters
   oscillation_reset_dist: 0.1  # 0.05   - how far to travel before resetting oscillation flags
+  prune_plan: false
 
   holonomic_robot: false
 

@@ -6,7 +6,13 @@ from geometry_msgs.msg import PoseWithCovarianceStamped
 def callback(data):
     rospy.loginfo(data.pose)
     f = open("path.txt",'a')
-    data = str(data.pose.pose.position.x) + ' ' + str(data.pose.pose.position.y) + ' ' + str(data.pose.pose.orientation.z) + ' ' + str(data.pose.pose.orientation.w) + ' ' + str(data.pose.pose.orientation.w) + '\n'
+    data = str(data.pose.pose.position.x) + ' ' 
+            + str(data.pose.pose.position.y) + ' ' 
+            + str(data.pose.pose.position.z) + ' ' 
+            + str(data.pose.pose.orientation.z) + ' ' 
+            + str(data.pose.pose.orientation.x) + ' ' 
+            + str(data.pose.pose.orientation.y) + ' ' 
+            + str(data.pose.pose.orientation.w) + '\n'
     f.write(data)
     f.close()
     

@@ -21,9 +21,9 @@
 	    command="load" ns="local_costmap" />
     <rosparam file="$(find dr_2dnav)/param/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find dr_2dnav)/param/global_costmap_params.yaml" command="load" />
-    <!--rosparam file="$(find dr_2dnav)/param/move_base_params.yaml" command="load" /-->
+    <rosparam file="$(find dr_2dnav)/param/move_base_params.yaml" command="load" />
     <rosparam file="$(find dr_2dnav)/param/dwa_local_planner_params.yaml" command="load" />
-    <rosparam file="$(find dr_2dnav)/param/base_local_planner_params.yaml" command="load" />
+    <!--rosparam file="$(find dr_2dnav)/param/base_local_planner_params.yaml" command="load" /-->
   </node>
 
   <node name="move_base_rviz" pkg="rviz" type="rviz" args="-d $(find dr_2dnav)/rviz/dr_2dnav_sim.rviz"/>

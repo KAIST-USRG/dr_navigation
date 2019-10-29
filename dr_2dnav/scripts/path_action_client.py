@@ -6,6 +6,7 @@ from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Pose
 import tf
 
+import actionlib
 from mbf_msgs.msg import ExePathAction
 
 def smach_client(path_msg):

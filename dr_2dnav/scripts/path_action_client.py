@@ -40,8 +40,8 @@ def talker():
         pose_msg.position.z = 0
         pose_msg.orientation.x = 0
         pose_msg.orientation.y = 0
-        pose_msg.orientation.z = float(value[2])
-        pose_msg.orientation.w = float(value[3])
+        pose_msg.orientation.z = float(value[5])
+        pose_msg.orientation.w = float(value[6])
         posestamp_msg.pose = pose_msg
         posestamp_msg.header = header_msg
         posestamp_list.append(posestamp_msg)

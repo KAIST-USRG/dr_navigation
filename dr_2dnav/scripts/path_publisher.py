@@ -30,23 +30,17 @@ def talker():
         pose_msg.position.x = float(value[0])
         pose_msg.position.y = float(value[1])
         pose_msg.position.z = float(value[2])
-        #pose_msg.orientation.x = float(value[3])
-        #pose_msg.orientation.y = float(value[4])
-        #pose_msg.orientation.z = float(value[5])
-        #pose_msg.orientation.w = float(value[6])
-        quaternion_original=(float(value[3]),
-                             float(value[4]),
-                             float(value[5]),
-                             float(value[6]))
-        euler = tf.transformations.euler_from_quaternion(quaternion_original)
-        roll = 0
-        pitch = 0
-        yaw   = euler[2]
-        quaternion = tf.transformations.quaternion_from_euler(roll, pitch, yaw)
-        pose_msg.orientation.x = float(quaternion[0])
-        pose_msg.orientation.y = float(quaternion[1])
-        pose_msg.orientation.z = float(quaternion[2])
-        pose_msg.orientation.w = float(quaternion[3])        
+        quaternion = (
+        float(value[3]),
+        float(value[4]),
+        float(value[5]),
+        float(value[6]))
+        euler = tf.transformations.euler_from_quaternion(quaternion)
+        quaternion_b = tf.transformations.quaternion_from_euler(0, 0, euler[2])
+        pose_msg.orientation.x = float(quaternion_b[0])
+        pose_msg.orientation.y = float(quaternion_b[1])
+        pose_msg.orientation.z = float(quaternion_b[2])
+        pose_msg.orientation.w = float(quaternion_b[3])     
         posestamp_msg.pose = pose_msg
         posestamp_msg.header = header_msg
         posestamp_list.append(posestamp_msg)

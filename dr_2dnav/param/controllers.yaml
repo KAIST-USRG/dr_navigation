@@ -78,8 +78,8 @@ dwa:
   controller_frequency: 5.0
 
 # Trajectory Scoring Parameters
-#path_distance_bias: 32.0
-  path_distance_bias: 128.0
+  path_distance_bias: 32.0
+#  path_distance_bias: 128.0
   goal_distance_bias: 24.0
   occdist_scale: 0.01
   forward_point_distance: 0.325

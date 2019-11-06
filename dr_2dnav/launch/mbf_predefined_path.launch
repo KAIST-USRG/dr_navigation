@@ -1,15 +1,19 @@
 <launch>
-  <arg name="amcl" default="true" />
-  <arg name="mapserver" default="true" />
+  <arg name="amcl" default="false" />
+  <arg name="hdl"  default="true" />
+  <arg name="mapserver" default="false" />
   <arg name="gmapping" default="false" />
   <arg name="rviz" default="true" />
 
+  <!--node pkg="tf" type="static_transform_publisher" name="odom2base" args="0 0 0 0 0 0 /odom /base_footprint 1" /-->
+
+
   <!-- Map Server -->
   <include if="$(arg mapserver)" file="$(find dr_2dnav)/launch/include/map_server.launch" />
-
   <!-- Run AMCL -->
   <include if="$(arg amcl)" file="$(find dr_2dnav)/launch/include/amcl.launch" />
-
+  <!-- Run HDL -->
+  <include if="$(arg hdl)" file="$(find dr_2dnav)/launch/hdl_localization_droid.launch" />
   <!-- Gmapping -->
   <include if="$(arg gmapping)" file="$(find ceres_navigation)/launch/gmapping.launch" />
 
@@ -22,10 +26,10 @@
     <rosparam file="$(find dr_2dnav)/param/recovery_behaviors.yaml" command="load" />
     <rosparam file="$(find dr_2dnav)/param/costmap_common_params.yaml" command="load" ns="global_costmap"/>
     <rosparam file="$(find dr_2dnav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find dr_2dnav)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/global_costmap_params_outdoor.yaml" command="load" />
     <rosparam file="$(find dr_2dnav)/param/local_costmap_params.yaml" command="load" />
   </node>
-  
+ 
   <!-- SMACH Navigation State Machine -->
   <node pkg="dr_2dnav" type="mbf_predefined_path.py" name="mbf_move_base_action" output="screen"/>
 

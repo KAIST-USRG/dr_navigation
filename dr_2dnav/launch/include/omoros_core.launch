@@ -11,6 +11,7 @@
       <param name="port" value="/dev/ttyUSB0"/>
       <param name="baud" value="115200"/>
       <param name="modelName" value="r1"/>
+      <remap from="/odom" to="/omo_odom" />
    </node>
 
 
@@ -18,7 +19,6 @@
          args="0.0 0.0 0.0 0 0 0.0 /map /odom 40" /-->
    <!--node pkg="tf" type="static_transform_publisher" name="odom_to_basefootprint" 
          args="0.0 0.0 0.0 0.0 0.0 0.0 /odom /base_footprint 40" /-->
-
    <node pkg="tf" type="static_transform_publisher" name="base_link_to_velodyne" 
          args="0.0  0.0 1.2 -1.57 0.0 0.0 /base_link /velodyne 40" />
 

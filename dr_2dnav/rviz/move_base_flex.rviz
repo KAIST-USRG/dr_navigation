@@ -3,7 +3,8 @@ Panels:
     Help Height: 81
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /Local Costmap1
       Splitter Ratio: 0.5
     Tree Height: 725
   - Class: rviz/Selection
@@ -91,9 +92,9 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 252
+      Max Intensity: 112
       Min Color: 0; 0; 0
-      Min Intensity: 1
+      Min Intensity: 0
       Name: Sick Tim Laser Scan
       Position Transformer: XYZ
       Queue Size: 10
@@ -202,6 +203,66 @@ Visualization Manager:
       Topic: /move_base_flex/global_costmap/footprint
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 127
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /velodyne_points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 0
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /globalmap
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -230,25 +291,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 22.57528305053711
+      Distance: 34.94522476196289
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 12.376965522766113
-        Y: -1.6408354043960571
-        Z: 0.775371253490448
+        X: 7.365666389465332
+        Y: 1.249804973602295
+        Z: 1.746604561805725
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 0.8497962951660156
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.5035643577575684
+      Yaw: 4.995391845703125
     Saved: ~
 Window Geometry:
   Displays:

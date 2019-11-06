@@ -20,7 +20,7 @@ def smach_client(path_msg):
     return client.get_result()
 
 def talker():
-    f = open("path.txt", 'r')
+    f = open("path_1F.txt", 'r')
     lines = f.readlines()
     f.close()
     posestamp_list = []
@@ -38,11 +38,11 @@ def talker():
         value = line.split()
         pose_msg.position.x = float(value[0])
         pose_msg.position.y = float(value[1])
-        pose_msg.position.z = 0
-        pose_msg.orientation.x = 0
-        pose_msg.orientation.y = 0
-        pose_msg.orientation.z = float(value[5])
-        pose_msg.orientation.w = float(value[6])
+        pose_msg.position.z = float(value[2])
+        pose_msg.orientation.x=0
+        pose_msg.orientation.y=0
+        pose_msg.orientation.z=float(value[5])
+        pose_msg.orientation.w=float(value[6])
         posestamp_msg.pose = pose_msg
         posestamp_msg.header = header_msg
         posestamp_list.append(posestamp_msg)

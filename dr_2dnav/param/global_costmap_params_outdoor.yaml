@@ -1,9 +1,13 @@
 global_costmap:
   global_frame: map
-  robot_base_frame: base_link
+  #robot_base_frame: base_link
+  robot_base_frame: base_footprint
+#  robot_base_frame: velodyne
 
   update_frequency: 5.0
   publish_frequency: 5.0
   transform_tolerance: 0.5
 
   static_map: false
+  #static_map: true
+  rolling_window: false 

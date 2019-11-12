@@ -20,7 +20,7 @@ def smach_client(path_msg):
     return client.get_result()
 
 def talker():
-    f = open("path_1F.txt", 'r')
+    f = open("path_cityhall_once_2.txt", 'r')
     lines = f.readlines()
     f.close()
     posestamp_list = []
@@ -39,10 +39,17 @@ def talker():
         pose_msg.position.x = float(value[0])
         pose_msg.position.y = float(value[1])
         pose_msg.position.z = float(value[2])
-        pose_msg.orientation.x=0
-        pose_msg.orientation.y=0
-        pose_msg.orientation.z=float(value[5])
-        pose_msg.orientation.w=float(value[6])
+        quaternion = (
+        float(value[3]),
+        float(value[4]),
+        float(value[5]),
+        float(value[6]))
+        euler = tf.transformations.euler_from_quaternion(quaternion)
+        quaternion_b = tf.transformations.quaternion_from_euler(0, 0, euler[2])
+        pose_msg.orientation.x = float(quaternion_b[0])
+        pose_msg.orientation.y = float(quaternion_b[1])
+        pose_msg.orientation.z = float(quaternion_b[2])
+        pose_msg.orientation.w = float(quaternion_b[3])     
         posestamp_msg.pose = pose_msg
         posestamp_msg.header = header_msg
         posestamp_list.append(posestamp_msg)

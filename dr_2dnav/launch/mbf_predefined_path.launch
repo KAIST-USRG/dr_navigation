@@ -1,7 +1,7 @@
 <launch>
   <arg name="amcl" default="false" />
   <arg name="hdl"  default="true" />
-  <arg name="mapserver" default="false" />
+  <arg name="mapserver" default="true" />
   <arg name="gmapping" default="false" />
   <arg name="rviz" default="true" />
 
@@ -22,7 +22,7 @@
     <param name="tf_timeout" value="1.5"/>
     <param name="planner_max_retries" value="3"/>
     <rosparam file="$(find dr_2dnav)/param/planners.yaml" command="load" />
-    <rosparam file="$(find dr_2dnav)/param/controllers.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/controllers_b.yaml" command="load" />
     <rosparam file="$(find dr_2dnav)/param/recovery_behaviors.yaml" command="load" />
     <rosparam file="$(find dr_2dnav)/param/costmap_common_params.yaml" command="load" ns="global_costmap"/>
     <rosparam file="$(find dr_2dnav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />

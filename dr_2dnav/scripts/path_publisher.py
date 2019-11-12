@@ -10,7 +10,7 @@ def talker():
     pub = rospy.Publisher('/path', Path, queue_size=10)
     rospy.init_node('path_publisher', anonymous=True)
     rate = rospy.Rate(10) # 10hz
-    f = open("path_1F.txt", 'r')
+    f = open("path_cityhall_once.txt", 'r')
     lines = f.readlines()
     f.close()
     posestamp_list = []

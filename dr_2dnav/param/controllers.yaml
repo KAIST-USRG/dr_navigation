@@ -1,6 +1,8 @@
 controllers:
    - name: 'dwa'
      type: 'dwa_local_planner/DWAPlannerROS'
+   - name: 'base'
+     type: 'base_local_planner/TrajectoryPlannerROS'
 
 dwa:
 # Robot Configuration Parameters
@@ -49,3 +51,26 @@ dwa:
 # Debugging
   publish_traj_pc : true
   publish_cost_grid_pc: true
+
+base:
+  holonomic_robot: false
+  max_vel_x: 0.6
+  min_vel_x: -0.6
+
+  max_vel_theta: 3
+  min_vel_theta: -3
+  min_in_place_vel_theta: 3
+
+  acc_lim_x: 0.3
+  acc_lim_y: 0.0
+  acc_lim_theta: 3
+
+  xy_goal_tolerance: 0.05
+  yaw_goal_tolerance: 0.1
+
+  sim_time: 2.0
+  vx_samples: 10
+  vtheta_samples: 20
+  sim_granularity: 0.025
+
+

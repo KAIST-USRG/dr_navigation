@@ -28,6 +28,7 @@
     <rosparam file="$(find dr_2dnav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
     <rosparam file="$(find dr_2dnav)/param/global_costmap_params_outdoor.yaml" command="load" />
     <rosparam file="$(find dr_2dnav)/param/local_costmap_params.yaml" command="load" />
+    <remap from="/cmd_vel" to="/cmd_vel_original"/>
   </node>
  
   <!-- SMACH Navigation State Machine -->

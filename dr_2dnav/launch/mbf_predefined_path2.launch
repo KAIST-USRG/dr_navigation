@@ -1,15 +1,16 @@
 <launch>
-  <arg name="amcl" default="true" />
+  <arg name="amcl" default="false" />
+  <arg name="hdl"  default="true" />
   <arg name="mapserver" default="false" />
   <arg name="gmapping" default="false" />
   <arg name="rviz" default="true" />
 
   <!-- Map Server -->
   <include if="$(arg mapserver)" file="$(find dr_2dnav)/launch/include/map_server.launch" />
-
   <!-- Run AMCL -->
   <include if="$(arg amcl)" file="$(find dr_2dnav)/launch/include/amcl.launch" />
-
+  <!-- Run HDL -->
+  <include if="$(arg hdl)" file="$(find dr_2dnav)/launch/hdl_localization_droid.launch" />
   <!-- Gmapping -->
   <include if="$(arg gmapping)" file="$(find ceres_navigation)/launch/gmapping.launch" />
 

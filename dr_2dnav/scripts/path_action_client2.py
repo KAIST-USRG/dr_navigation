@@ -25,7 +25,7 @@ if __name__ == '__main__':
         rospy.init_node('path_action_client', anonymous=True)
         pub = rospy.Publisher('/path', Path, queue_size=1)
         time.sleep(0.5)
-        f = open("gazebo_L.txt", 'r')
+        f = open("KI_1F_L_path.txt", 'r')
         lines = f.readlines()
         f.close()
         posestamp_list = []

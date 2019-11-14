@@ -12,8 +12,8 @@
 
     <!-- globalmap_server_nodelet -->
     <node pkg="nodelet" type="nodelet" name="globalmap_server_nodelet" args="load hdl_localization/GlobalmapServerNodelet $(arg nodelet_manager)">
-	    <param name="globalmap_pcd" value="$(find dr_2dnav)/map/cityhall_outdoor_3d/cityhall_outdoor_-9.8_once.pcd" />
-	    <!--param name="globalmap_pcd" value="$(find dr_2dnav)/map/KI_1F/KI_1F.pcd" /-->
+	    <param name="globalmap_pcd" value="$(find dr_2dnav)/map/KI_1F/KI_1F.pcd" />
+	    <!--param name="globalmap_pcd" value="$(find dr_2dnav)/map/cityhall_outdoor_3d/cityhall_outdoor_-9.8_once.pcd" /-->
       <param name="downsample_resolution" value="0.1" />
     </node>
 

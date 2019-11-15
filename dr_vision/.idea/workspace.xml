@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="67c393ef-d421-4c64-8f9f-ed479fdf95a7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_inside/checkpoint" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_inside/frozen_inference_graph.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_inside/model.ckpt.data-00000-of-00001" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_inside/model.ckpt.index" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_inside/model.ckpt.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_inside/pipeline.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_inside/saved_model/saved_model.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_outside/checkpoint" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_outside/frozen_inference_graph.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_outside/model.ckpt.data-00000-of-00001" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_outside/model.ckpt.index" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_outside/model.ckpt.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_outside/pipeline.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_outside/saved_model/saved_model.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_ped_light/checkpoint" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_ped_light/frozen_inference_graph.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_ped_light/model.ckpt.data-00000-of-00001" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_ped_light/model.ckpt.index" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_ped_light/model.ckpt.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_ped_light/pipeline.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/inference_graph_ped_light/saved_model/saved_model.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/training_inside/labelmap.pbtxt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/training_inside/ssd_mobilenet_v1_coco.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/training_outside/faster_rcnn_inception_v2_coco.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/training_outside/labelmap.pbtxt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/training_ped_light/faster_rcnn_inception_v2_coco.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/training_ped_light/labelmap.pbtxt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/button_inside_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/button_inside_detection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/button_outside_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/button_outside_detection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph/checkpoint" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph/frozen_inference_graph.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph/model.ckpt.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph/model.ckpt.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph/model.ckpt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph/pipeline.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph/saved_model/saved_model.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_inside/checkpoint" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_inside/frozen_inference_graph.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_inside/model.ckpt.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_inside/model.ckpt.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_inside/model.ckpt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_inside/pipeline.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_inside/saved_model/saved_model.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_outside/checkpoint" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_outside/frozen_inference_graph.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_outside/model.ckpt.data-00000-of-00001" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_outside/model.ckpt.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_outside/model.ckpt.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_outside/pipeline.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/inference_graph_outside/saved_model/saved_model.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/pred_light_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/pred_light_detection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/training_inside_ped_light/labelmap.pbtxt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/training_inside_ped_light/ssd_mobilenet_v1_coco.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/training_outside/faster_rcnn_inception_v2_coco.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/training_outside/labelmap.pbtxt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/training_pred_light/faster_rcnn_inception_v2_coco.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/training_pred_light/labelmap.pbtxt" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1TBmD2qTXSqfpKUiDpXYxpfz5Uc" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Object_detection_video" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="dr_vision" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/Object_detection_video.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Object_detection_video" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="67c393ef-d421-4c64-8f9f-ed479fdf95a7" name="Default Changelist" comment="" />
+      <created>1572941739620</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1572941739620</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>

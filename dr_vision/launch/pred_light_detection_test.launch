@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
    <!-- launch video stream -->
-   <node pkg="dr_vision" name="pred_light_detection" type="pred_light_detection.py" >
+   <node pkg="dr_vision" name="pred_light_detection" type="pred_light_detection.py" output="screen">
 	   <remap from="/camera/color/image_rect_color" to="videofile/image_raw" />
    </node>
    <include file="$(find video_stream_opencv)/launch/camera.launch" >

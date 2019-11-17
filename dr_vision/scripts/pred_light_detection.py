@@ -13,6 +13,7 @@ from cv_bridge import CvBridge, CvBridgeError
 
 from rospy.numpy_msg import numpy_msg
 from rospy_tutorials.msg import Floats
+from std_msgs.msg import Bool
 
 # This is needed since the notebook is stored in the object_detection folder.
 sys.path.append("..")
@@ -88,6 +89,7 @@ class light_detector:
         self.image_sub = rospy.Subscriber("/camera/color/image_rect_color", Image, self.imageCallback)
         self.bbox_conf_pub = rospy.Publisher('bbox_conf', numpy_msg(Floats), queue_size=10)
         self.bbox_class_pub = rospy.Publisher('bbox_class', numpy_msg(Floats), queue_size=10)
+        self.green_light_detection_pub = rospy.Publisher('green_light', Bool, queue_size=10)
 
     def imageCallback(self, data):
         try:
@@ -108,8 +110,23 @@ class light_detector:
             bbox_conf = np.squeeze(scores)[index]
             bbox_class = np.squeeze(classes)[index]
 
-            self.bbox_conf_pub.publish(bbox_conf.flatten())
-            self.bbox_class_pub.publish(bbox_class.flatten())
+            bbox_conf_flatten = bbox_conf.flatten()
+            bbox_class_flatten = bbox_class.flatten()
+            self.bbox_conf_pub.publish(bbox_conf_flatten)
+            self.bbox_class_pub.publish(bbox_class_flatten)
+
+            rospy.loginfo("bbox_conf_flatten:" + str(bbox_conf_flatten))
+            rospy.loginfo("bbox_class_flatten:" + str(bbox_class_flatten))
+
+            if len(bbox_conf_flatten) > 0:
+                if np.amax(bbox_conf_flatten) > 0.8:
+                    bool_msg = Bool()
+                    bool_msg.data = True
+                    self.green_light_detection_pub.publish(bool_msg)
+                    rospy.loginfo("Publish True")
+
+            rospy.loginfo("Conf max:" + str(bbox_conf_flatten))
+            
 
             # Draw the results of the detection (aka 'visualize the results')
             vis_util.visualize_boxes_and_labels_on_image_array(

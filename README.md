@@ -57,6 +57,7 @@ $ roslaunch dr_control dr_control.launch
 Installation
 1) Install Tensorflow "python2" with compatible version with CUDA, cuDNN see link https://www.tensorflow.org/install/source#gpu
 2) Install Realsense camera SDK package and Realsense ROS package
+3) Install install object_detection/research in tensorflow model. See link https://github.com/tensorflow/models/research/object_detection/g3doc/installation.md
 
 Run
 1) Call the node of realsense camera

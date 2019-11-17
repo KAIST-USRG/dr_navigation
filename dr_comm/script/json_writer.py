@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json
 import rospy
 from sensor_msgs.msg import Imu
@@ -6,6 +7,9 @@ from nav_msgs.msg import Odometry
 
 class JsonWriter:
     def __init__(self):
+        self.file_path = rospy.get_param('~json_path', 'sensor_data.json')
+        rospy.loginfo(self.file_path)
+
         self.imu_sub = rospy.Subscriber('imu', Imu, self.imu_callback)
         self.gps_sub = rospy.Subscriber('gps', NavSatFix, self.gps_callback)
         self.odom_sub = rospy.Subscriber('odom', Odometry, self.odom_callback)
@@ -17,6 +21,8 @@ class JsonWriter:
 
         self.json_data = {}
 
+        self.make_json_data()
+
     def imu_callback(self, imu_data):
         self.imu_data = imu_data
 
@@ -27,36 +33,38 @@ class JsonWriter:
         self.odom_data = odom_data
 
     def time_callback(self, timer):
-        rospy.logdebug('time_callback')
+        rospy.loginfo('time_callback')
         self.make_json_data()
+        self.write_file(self.file_path)
 
     def make_json_data(self):
         data = {}
         data['sensors'] = []
         data['sensors'].append({
-            'imu_acc_x': 'Scott',
-            'imu_acc_y': 'Scott',
-            'imu_acc_z': 'Scott',
-            'imu_gyro_x': 'Scott',
-            'imu_gyro_y': 'Scott',
-            'imu_gyro_z': 'Scott',
-            'imu_ori_x': 'Scott',
-            'imu_ori_y': 'Scott',
-            'imu_ori_z': 'Scott',
-            'imu_ori_w': 'Scott',
+            'imu_acc_x': self.imu_data.linear_acceleration.x,
+            'imu_acc_y': self.imu_data.linear_acceleration.y,
+            'imu_acc_z': self.imu_data.linear_acceleration.z,
+            'imu_gyro_x': self.imu_data.angular_velocity.x,
+            'imu_gyro_y': self.imu_data.angular_velocity.y,
+            'imu_gyro_z': self.imu_data.angular_velocity.z,
+            'imu_ori_x': self.imu_data.orientation.x,
+            'imu_ori_y': self.imu_data.orientation.y,
+            'imu_ori_z': self.imu_data.orientation.z,
+            'imu_ori_w': self.imu_data.orientation.w,
         
-            'gps_lat': 'Scott',
-            'gps_lon': 'Scott',
-            'gps_hei': 'Scott',
+            'gps_lat': self.gps_data.latitude,
+            'gps_lon': self.gps_data.longitude,
+            'gps_hei': self.gps_data.altitude,
         
             #'left_wheel_speed': ,
             #'left_wheel_angle': ,
             #'right_wheel_speed': ,
             #'right_wheel_angle': ,
             
-            'odom_x': 1,
-            'odom_y': 2,
-            'odom_speed': 3
+            'odom_x': self.odom_data.pose.pose.position.x,
+            'odom_y': self.odom_data.pose.pose.position.y,
+            'odom_x_speed': self.odom_data.twist.twist.linear.x,
+            'odom_yaw_rate': self.odom_data.twist.twist.angular.z
         })
         self.json_data = data
         
@@ -70,7 +78,6 @@ if __name__ == '__main__':
         rospy.init_node('json_writer', anonymous=True)
         json_writer = JsonWriter()
         while not rospy.is_shutdown():
-            json_writer.write_file("sensor_data.json")
             rospy.logdebug(json_writer.json_data)
     except rospy.ROSInterruptException:
         pass

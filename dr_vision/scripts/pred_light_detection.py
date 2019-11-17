@@ -51,6 +51,10 @@ category_index = label_map_util.create_category_index(categories)
 
 # Load the Tensorflow model into memory.
 detection_graph = tf.Graph()
+
+config = tf.ConfigProto() 
+config.gpu_options.allow_growth = True
+
 with detection_graph.as_default():
     od_graph_def = tf.GraphDef()
     with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
@@ -58,7 +62,7 @@ with detection_graph.as_default():
         od_graph_def.ParseFromString(serialized_graph)
         tf.import_graph_def(od_graph_def, name='')
 
-    sess = tf.Session(graph=detection_graph)
+    sess = tf.Session(graph=detection_graph, config=config)
 
 # Define input and output tensors (i.e. data) for the object detection classifier
 

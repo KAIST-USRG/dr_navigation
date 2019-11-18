@@ -1,0 +1,1 @@
+{"sensors": [{"imu_gyro_x": 10.0, "imu_gyro_y": 0.0, "imu_gyro_z": 0.0, "imu_ori_y": 0.0, "gps_lat": 0.0, "odom_x_speed": 0.0, "odom_y": 0.0, "odom_yaw_rate": 0.0, "imu_ori_x": 0.0, "imu_ori_w": 0.0, "gps_lon": 0.0, "gps_hei": 0.0, "odom_x": 0.0, "imu_ori_z": 0.0, "imu_acc_y": 0.0, "imu_acc_x": 0.0, "imu_acc_z": 0.0}]}

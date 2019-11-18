@@ -4,6 +4,7 @@ from std_msgs.msg import Int32
 from nav_msgs.msg import Odometry
 import numpy as np
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Bool
 
 class Robot:
    rospy.init_node('Cmd_publisher', anonymous=True)
@@ -12,6 +13,8 @@ class Robot:
     lines = f.readlines()
     f.close()
     index =0
+    self.green = False
+    self.light_index = 0
     self.M = np.zeros((len(lines),2))
     for line in lines:
         value = line.split()
@@ -20,7 +23,15 @@ class Robot:
         index = index+1
     rospy.Subscriber("/odom", Odometry, self.index_callback)
     rospy.Subscriber("/cmd_vel_original", Twist, self.cmd_vel_callback)
+    rospy.Subscriber("/green_light", Bool, self.Traffic_light_callback)
     rospy.spin()
+
+   def Traffic_light_callback(self,data):
+    pub_traffic = rospy.Publisher('/green', Bool, queue_size=1)
+    if self.light_index>10:
+       self.green = True
+    self.light_index +=1
+    pub_traffic.publish(self.green)    
 
    def index_callback(self,data):
     pub = rospy.Publisher('/index', Int32, queue_size=1)
@@ -36,21 +47,33 @@ class Robot:
     scailing_indoor_factor =0.333
     scailing_down_factor = 0.5
     scailing_up_factor = 1.5
-    if (self.ind >237) and (self.ind) <500:                  #curve 1
+    if (self.ind >237) and (self.ind <2000):                  #from curve1 to crosswalk
         data.linear.x=data.linear.x*scailing_down_factor
         pub_cmd.publish(data)
         print("slower")
-    elif (self.ind >2200) and (self.ind) <2450:              #crosswalk
-        data.linear.x=data.linear.x*scailing_up_factor
-        data.angular.z=data.linear.z*scailing_down_factor
+    elif (self.ind>=2000) and (self.ind<2280) and (self.green==False):           #Traffic light Red
+        data.linear.x=0
+        data.angular.z=0
+        pub_cmd.publish(data)
+        print("Red light")
+    elif (self.ind>2000) and (self.ind<2280) and (self.green==True):           #Traffic light Green
+        pub_cmd.publish(data)
+        print("Green light") 
+    elif (self.ind >=2280) and (self.ind) <2460:              #crosswalk
+        data.linear.x=0.7
+        data.angular.z=data.angular.z*0.7
         pub_cmd.publish(data)
         print("Boost")
+    elif (self.ind >=2480) and (self.ind) <2550:              #crosswalk stuck
+        data.linear.x=data.linear.x*scailing_down_factor
+        pub_cmd.publish(data)
+        print("slower")
     elif (self.ind >3420) and (self.ind) <3550:              #curve 2
         data.linear.x=data.linear.x*scailing_down_factor
         pub_cmd.publish(data)
         print("slower")
-    elif (self.ind >3900) and (self.ind) <4090:               #curve 3
-        data.linear.x=data.linear.x*scailing_down_factor
+    elif (self.ind >3900) and (self.ind) <4120:               #curve 3
+        data.linear.x=0.15
         pub_cmd.publish(data)
         print("slower")
     elif (self.ind >4950) and (self.ind) <5735:                #in front of cityhall

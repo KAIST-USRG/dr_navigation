@@ -1,35 +1,9 @@
 # dr_navigation
 
 ## Prerequirements
-~~### cartographer_ros~~
-~~Download cartographer on cartographer workspace.~~
-```
-$ sudo apt-get update
-$ sudo apt-get install -y python-wstool python-rosdep ninja-build
-$ cd ~
-$ mkdir -p cartographer_ws
-$ cd cartographer_ws
-$ wstool init src
-$ wstool merge -t src https://raw.githubusercontent.com/googlecartographer/cartographer_ros/master/cartographer_ros.rosinstall
-$ wstool update -t src
-$ src/cartographer/scripts/install_proto3.sh
-$ sudo rosdep init
-$ rosdep update
-$ rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
-```
-Checkout to master branch
-```
-$ cd ~/cartographer_ws/src/cartographer
-$ git checkout master
-$ cd ~/cartographer_ws/src/cartographer_ros
-$ git checkout master
-```
-Compile
-```
-$ cd ~/cartographer_ws
-$ catkin_make_isolated --install --use-ninja
-```
-
+1. SMACH
+2. omoros
+3. move_base_flex
 
 ## Build dr_navigation
 Clone github repository.

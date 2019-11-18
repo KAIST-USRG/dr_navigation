@@ -1,0 +1,40 @@
+<launch>
+  <arg name="amcl" default="false" />
+  <arg name="hdl"  default="true" />
+  <arg name="mapserver" default="true" />
+  <arg name="gmapping" default="false" />
+  <arg name="rviz" default="true" />
+
+  <!--node pkg="tf" type="static_transform_publisher" name="odom2base" args="0 0 0 0 0 0 /odom /base_footprint 1" /-->
+
+
+  <!-- Map Server -->
+  <include if="$(arg mapserver)" file="$(find dr_2dnav)/launch/include/map_server.launch" />
+  <!-- Run AMCL -->
+  <include if="$(arg amcl)" file="$(find dr_2dnav)/launch/include/amcl.launch" />
+  <!-- Run HDL -->
+  <include if="$(arg hdl)" file="$(find dr_2dnav)/launch/hdl_localization_droid.launch" />
+  <!-- Gmapping -->
+  <include if="$(arg gmapping)" file="$(find ceres_navigation)/launch/gmapping.launch" />
+
+  <!-- Move Base Flex -->
+  <node pkg="mbf_costmap_nav" type="mbf_costmap_nav" respawn="false" name="move_base_flex" output="screen"> 
+    <param name="tf_timeout" value="1.5"/>
+    <param name="planner_max_retries" value="3"/>
+    <rosparam file="$(find dr_2dnav)/param/planners.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/controllers_b.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/recovery_behaviors.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/costmap_common_params.yaml" command="load" ns="global_costmap"/>
+    <rosparam file="$(find dr_2dnav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find dr_2dnav)/param/global_costmap_params_outdoor.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/local_costmap_params.yaml" command="load" />
+    <remap from="/cmd_vel" to="/cmd_vel_original"/>
+  </node>
+ 
+  <!-- SMACH Navigation State Machine -->
+  <node pkg="dr_2dnav" type="mbf_predefined_path.py" name="mbf_move_base_action" output="screen"/>
+
+  <!-- RViz with config -->
+  <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find dr_2dnav)/rviz/move_base_flex.rviz" />
+
+</launch>

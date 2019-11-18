@@ -1,0 +1,9 @@
+<launch>
+  <node pkg="dr_comm" type="json_writer.py" name="json_writer" output="screen" clear_params="true">
+    <remap from="imu" to="imu" />
+    <remap from="gps" to="gps" />
+    <remap from="odom" to="odom" />
+    <param name="json_path" value="$(find dr_comm)/json/sensor_data.json" />
+  </node>
+
+</launch>

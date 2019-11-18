@@ -27,3 +27,18 @@ $ roslaunch dr_2dnav dr_configuration.launch
 $ roslaunch dr_2dnav move_base.launch
 $ roslaunch dr_control dr_control.launch
 ```
+## dr_vision
+Installation
+1) Install Tensorflow "python2" with compatible version with CUDA, cuDNN see link https://www.tensorflow.org/install/source#gpu
+2) Install Realsense camera SDK package and Realsense ROS package
+3) Install install object_detection/research in tensorflow model. See link https://github.com/tensorflow/models/research/object_detection/g3doc/installation.md
+
+Run
+1) Call the node of realsense camera
+```
+$ roslaunch realsense2_camera rs_rgbd.launch
+```
+2) Run the pedestrain light detector (if not run on GPU, it will be very very slow!)
+```
+$ rosrun dr_vision pred_light_detection.py
+```

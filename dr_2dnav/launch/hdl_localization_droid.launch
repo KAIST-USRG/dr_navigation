@@ -12,12 +12,13 @@
 
     <!-- globalmap_server_nodelet -->
     <node pkg="nodelet" type="nodelet" name="globalmap_server_nodelet" args="load hdl_localization/GlobalmapServerNodelet $(arg nodelet_manager)">
-	    <param name="globalmap_pcd" value="$(find dr_2dnav)/map/cityhall_outdoor_3d/cityhall_outdoor.pcd" />
+	    <param name="globalmap_pcd" value="$(find dr_2dnav)/map/cityhall_outdoor_3d/cityhall_outdoor_-9.8_once.pcd" />
+	    <!--param name="globalmap_pcd" value="$(find dr_2dnav)/map/KI_1F/KI_1F.pcd" /-->
       <param name="downsample_resolution" value="0.1" />
     </node>
 
     <!-- hdl_localization_nodelet -->
-    <node pkg="nodelet" type="nodelet" name="hdl_localization_nodelet" args="load hdl_localization/HdlLocalizationNodelet $(arg nodelet_manager)">
+    <node pkg="nodelet" type="nodelet" name="hdl_localization_nodelet" args="load hdl_localization/HdlLocalizationNodelet $(arg nodelet_manager)" output="screen">
 	    
         <remap from="/velodyne_points" to="$(arg points_topic)" />
         <remap from="/gpsimu_driver/imu_data" to="$(arg imu_topic)" />
@@ -34,13 +35,21 @@
         <!-- if "specify_init_pose" is true, pose estimator will be initialized with the following params -->
         <!-- otherwise, you need to input an initial pose with "2D Pose Estimate" on rviz" -->
         <param name="specify_init_pose" value="true" />
-        <param name="init_pos_x" value="0.0" />
-        <param name="init_pos_y" value="0.0" />
+        <param name="init_pos_x" value="7.64092254639" />
+        <param name="init_pos_y" value="-4.3274641037" />
         <param name="init_pos_z" value="0.0" />
-        <param name="init_ori_w" value="0.7071068" />
+        <param name="init_ori_w" value="0.81741240273" />
         <param name="init_ori_x" value="0.0" />
         <param name="init_ori_y" value="0.0" />
-        <param name="init_ori_z" value="-0.7071068" />
+	<param name="init_ori_z" value="0.576052917589" />
+        <!--param name="init_pos_x" value="-3.535608" />
+        <param name="init_pos_y" value="-6.848195" />
+        <param name="init_pos_z" value="0.000000" />
+        <param name="init_ori_w" value="0.988000" />
+        <param name="init_ori_x" value="0.0" />
+        <param name="init_ori_y" value="0.0" />
+        <param name="init_ori_z" value="0.154452" /-->
+
     </node>
-    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find dr_2dnav)/rviz/hdl_localization.rviz" />
+    <!--node type="rviz" name="rviz" pkg="rviz" args="-d $(find dr_2dnav)/rviz/hdl_localization.rviz" /-->
 </launch>

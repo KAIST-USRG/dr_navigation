@@ -11,8 +11,8 @@
     <rosparam>
       axis_linear: 1
       axis_angular: 0
-      scale_linear: 4.0
-      scale_angular: 4.0
+      scale_linear: 1.0
+      scale_angular: 1.0
       enable_button: 0
     </rosparam>
   </node>

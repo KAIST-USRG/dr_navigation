@@ -11,7 +11,8 @@ Clone github repository.
 $ cd ~
 $ mkdir -p dr_ws/src
 $ cd dr_ws/src
-$ git clone https://github.com/hdh7485/dr_navigation.git
+$ git clone https://github.com/kaist-usrg/dr_navigation.git
+$ git clone https://github.com/hdh7485/teleop_twist_joy.git
 ```
 Build
 ```

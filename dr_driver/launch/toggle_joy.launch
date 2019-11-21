@@ -1,0 +1,32 @@
+<launch>
+  <arg name="joy_dev" default="/dev/input/js0" />
+  <arg name="config_topics" default="$(find dr_driver)/config/twist_mux.yaml"/>
+  <arg name="config_locks"  default="$(find dr_driver)/config/twist_mux_locks.yaml"/>
+  <arg name="cmd_vel_out" default="cmd_vel"/>
+
+  <node pkg="joy" type="joy_node" name="joy_node" ns="joy">
+    <param name="dev" value="$(arg joy_dev)" />
+    <param name="deadzone" value="0.1" />
+    <param name="autorepeat_rate" value="20" />
+  </node>
+
+  <node pkg="teleop_twist_joy" name="teleop_twist_joy" type="teleop_node" ns="joy">
+    <rosparam>
+      axis_linear: 1
+      axis_angular: 0
+      scale_linear: 1.0
+      scale_angular: 1.0
+      toggle_enable: true
+      enable_button: 0
+    </rosparam>
+  </node>
+
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
+    <remap from="cmd_vel_out" to="$(arg cmd_vel_out)"/>
+    <rosparam file="$(arg config_topics)" command="load"/>
+    <rosparam file="$(arg config_locks)" command="load"/>
+  </node>
+
+  <node pkg="dr_driver" type="dr_driver.py" name="dr_driver" output="screen"/>
+
+</launch>

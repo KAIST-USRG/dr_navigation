@@ -43,7 +43,7 @@ class Robot:
     pub.publish(self.ind)
 
    def cmd_vel_callback(self,data):
-    pub_cmd = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+    pub_cmd = rospy.Publisher('/move_base/cmd_vel', Twist, queue_size=10)
     scailing_indoor_factor =0.333
     scailing_down_factor = 0.5
     scailing_up_factor = 1.5
@@ -60,23 +60,35 @@ class Robot:
         pub_cmd.publish(data)
         print("Green light") 
     elif (self.ind >=2280) and (self.ind) <2460:              #crosswalk
-        data.linear.x=0.7
-        data.angular.z=data.angular.z*0.7
+        data.linear.x=0.8
+        data.angular.z=data.angular.z*0.5
         pub_cmd.publish(data)
         print("Boost")
-    elif (self.ind >=2480) and (self.ind) <2550:              #crosswalk stuck
+    elif (self.ind >=2480) and (self.ind) <2600:              #crosswalk stuck
         data.linear.x=data.linear.x*scailing_down_factor
         pub_cmd.publish(data)
         print("slower")
+    elif (self.ind >=2600) and (self.ind) <3420:              #subway
+        data.linear.x=0.6
+        pub_cmd.publish(data)
+        print("normal")
     elif (self.ind >3420) and (self.ind) <3550:              #curve 2
         data.linear.x=data.linear.x*scailing_down_factor
         pub_cmd.publish(data)
         print("slower")
-    elif (self.ind >3900) and (self.ind) <4120:               #curve 3
-        data.linear.x=0.15
+    elif (self.ind >3550) and (self.ind) <3900:               #parking
+        data.linear.x=0.6
+        pub_cmd.publish(data)
+        print("normal")
+    elif (self.ind >=3900) and (self.ind) <4120:               #curve 3
+        data.linear.x=0.3
         pub_cmd.publish(data)
         print("slower")
-    elif (self.ind >4950) and (self.ind) <5735:                #in front of cityhall
+    elif (self.ind >=4120) and (self.ind) <4950:               #Hill
+        data.linear.x=0.6
+        pub_cmd.publish(data)
+        print("normal")
+    elif (self.ind >=4950) and (self.ind) <5735:                #in front of cityhall
         data.linear.x=data.linear.x*scailing_down_factor
         pub_cmd.publish(data)
         print("slower")

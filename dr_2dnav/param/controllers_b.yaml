@@ -3,7 +3,7 @@ controllers:
     type: 'base_local_planner/TrajectoryPlannerROS'
 controller:
   holonomic_robot: false
-  max_vel_x: 0.6
+  max_vel_x: 0.8
   min_vel_x: -0.6
 
   max_vel_theta: 3

@@ -1,5 +1,5 @@
 # dr_comm
-## JSON data information (중요도 
+## JSON data information (중요도 순)
 ### 1. GPS
 GPS는 Latitude(위도), Longitude(경도), Height(높이) 정보를 얻어온다. 각각 gps_lat, gps_lon, gps_hei 키에 저장된다.
 ### 2. IMU

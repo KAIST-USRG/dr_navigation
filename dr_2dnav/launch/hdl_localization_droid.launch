@@ -8,11 +8,12 @@
   <!--node pkg="tf" type="static_transform_publisher" name="lidar2base_publisher" args="0 0 1.2 -1.57 0 0 base_link velodyne 100" />
   <node pkg="tf" type="static_transform_publisher" name="imu2base_publisher" args="0 0 0.88 0 0 3.14 base_link gx5_link 100" /-->
   <!-- in case you use velodyne_driver, comment out the following line -->
-  <!--node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen"/-->
+  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen"/>
 
     <!-- globalmap_server_nodelet -->
     <node pkg="nodelet" type="nodelet" name="globalmap_server_nodelet" args="load hdl_localization/GlobalmapServerNodelet $(arg nodelet_manager)">
-	    <param name="globalmap_pcd" value="$(find dr_2dnav)/map/cityhall_outdoor_3d/cityhall_outdoor_-9.8_once.pcd" />
+	    <!--param name="globalmap_pcd" value="$(find dr_2dnav)/map/cityhall_outdoor_3d/cityhall_outdoor_-9.8_once.pcd" /-->
+	    <param name="globalmap_pcd" value="$(find dr_2dnav)/map/cityhall_10F/cityhall_10th_floot_2.pcd" />
 	    <!--param name="globalmap_pcd" value="$(find dr_2dnav)/map/KI_1F/KI_1F.pcd" /-->
       <param name="downsample_resolution" value="0.1" />
     </node>

@@ -25,7 +25,7 @@ from object_detection.utils import visualization_utils as vis_util
 
 # Name of the directory containing the object detection module we're using
 rospack = rospkg.RosPack()
-MODEL_NAME = 'inference_graph_ped_light'
+MODEL_NAME = 'inference_graph_ped_light_2'
 
 # Grab path to current working directory
 CWD_PATH = os.getcwd()
@@ -35,10 +35,10 @@ CWD_PATH = os.getcwd()
 PATH_TO_CKPT = os.path.join(rospack.get_path('dr_vision'), 'models', MODEL_NAME, 'frozen_inference_graph.pb')
 
 # Path to label map file
-PATH_TO_LABELS = os.path.join(rospack.get_path('dr_vision'), 'models', 'training_ped_light', 'labelmap.pbtxt')
+PATH_TO_LABELS = os.path.join(rospack.get_path('dr_vision'), 'models', 'training_ped_light_2', 'labelmap.pbtxt')
 
 # Number of classes the object detector can identify
-NUM_CLASSES = 1
+NUM_CLASSES = 2
 
 ## Load the label map.
 # Label maps map indices to category names, so that when our convolution
@@ -86,7 +86,8 @@ num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 class light_detector:
     def __init__(self):
         self.bridge = CvBridge()
-        self.image_sub = rospy.Subscriber("/camera/color/image_rect_color", Image, self.imageCallback)
+#        self.image_sub = rospy.Subscriber("/camera/color/image_rect_color", Image, self.imageCallback)
+        self.image_sub = rospy.Subscriber("/camera/color/image_raw", Image, self.imageCallback)
         self.bbox_conf_pub = rospy.Publisher('bbox_conf', numpy_msg(Floats), queue_size=10)
         self.bbox_class_pub = rospy.Publisher('bbox_class', numpy_msg(Floats), queue_size=10)
         self.green_light_detection_pub = rospy.Publisher('green_light', Bool, queue_size=10)
@@ -104,11 +105,12 @@ class light_detector:
             (boxes, scores, classes, num) = sess.run(
                 [detection_boxes, detection_scores, detection_classes, num_detections],
                 feed_dict={image_tensor: frame_expanded})
-
-            index = np.squeeze(scores >= 0.70)
+	    CONF = 0.98
+            index = np.squeeze(scores >= 0.90)
 
             bbox_conf = np.squeeze(scores)[index]
             bbox_class = np.squeeze(classes)[index]
+            print("bbox_class", bbox_class)
 
             bbox_conf_flatten = bbox_conf.flatten()
             bbox_class_flatten = bbox_class.flatten()
@@ -119,7 +121,7 @@ class light_detector:
             rospy.loginfo("bbox_class_flatten:" + str(bbox_class_flatten))
 
             if len(bbox_conf_flatten) > 0:
-                if np.amax(bbox_conf_flatten) > 0.8:
+                if np.amax(bbox_conf_flatten) > CONF:
                     bool_msg = Bool()
                     bool_msg.data = True
                     self.green_light_detection_pub.publish(bool_msg)
@@ -137,7 +139,7 @@ class light_detector:
                 category_index,
                 use_normalized_coordinates=True,
                 line_thickness=8,
-                min_score_thresh=0.70)
+                min_score_thresh=CONF)
 
             # All the results have been drawn on the frame, so it's time to display it.
             cv2.imshow('ped_light detector', frame)

@@ -28,10 +28,11 @@ class Robot:
 
    def Traffic_light_callback(self,data):
     pub_traffic = rospy.Publisher('/green', Bool, queue_size=1)
-    if self.light_index>10:
-       self.green = True
-    self.light_index +=1
-    pub_traffic.publish(self.green)    
+    if (self.ind>=2000):
+       if (self.light_index>10):
+          self.green = True
+       self.light_index +=1
+       pub_traffic.publish(self.green)    
 
    def index_callback(self,data):
     pub = rospy.Publisher('/index', Int32, queue_size=1)

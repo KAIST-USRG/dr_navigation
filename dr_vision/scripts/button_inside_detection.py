@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import rospkg
+import math
 import rospy
 import cv2
 import os
@@ -8,9 +9,12 @@ import sys
 import tensorflow as tf
 import numpy as np
 
-from sensor_msgs.msg import Image, CameraInfo
+
 from cv_bridge import CvBridge, CvBridgeError
 
+from sensor_msgs.msg import Image, CameraInfo, Range
+from geometry_msgs.msg import Pose
+from std_msgs.msg import Float32
 from rospy.numpy_msg import numpy_msg
 from rospy_tutorials.msg import Floats
 
@@ -52,7 +56,7 @@ category_index = label_map_util.create_category_index(categories)
 # Load the Tensorflow model into memory.
 detection_graph = tf.Graph()
 
-config = tf.ConfigProto() 
+config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 
 with detection_graph.as_default():
@@ -93,12 +97,11 @@ def euler_to_quaternion(yaw, pitch, roll):
 class BboxDepth:
     def __init__(self):
         self.bridge = CvBridge()
-        self.depth_sub = rospy.Subscriber("/camera/aligned_depth_to_color/image_raw", Image,
-                                          self.depthCallback, queue_size=1)
+        self.lidar_sub = rospy.Subscriber("/teraranger_evo", Range, self.lidarCallback)
         self.image_sub = rospy.Subscriber("/camera/color/image_raw", Image, self.imageCallback)
-        self.bbox_pos_pub = rospy.Publisher('bbox_pos', numpy_msg(Floats), queue_size=10)
-        self.bbox_conf_pub = rospy.Publisher('bbox_conf', numpy_msg(Floats), queue_size=10)
-        self.bbox_class_pub = rospy.Publisher('bbox_class', numpy_msg(Floats), queue_size=10)
+        self.bbox_10_pose_pub = rospy.Publisher("/bbox_10_pose", Pose, queue_size=10)
+        self.bbox_10_conf_pub = rospy.Publisher("/bbox_10_conf", Float32, queue_size=10)
+
         self.P_mat = [615.4674072265625, 0.0, 319.95697021484375,
                       0.0, 0.0, 615.7725219726562,
                       245.20480346679688, 0.0, 0.0,
@@ -110,7 +113,19 @@ class BboxDepth:
         self.offset_y = 245.20480346679688
         self.width = 640
         self.height = 480
+        self.depth_valid = True
+        self.lidar_depth = -1
+        self.bbox_10_pose_msg = Pose()
+        self.bbox_10_conf_msg = Float32()
 
+    def lidarCallback(self, msg):
+        if math.isnan(msg.range):
+            self.depth_valid = False
+            return
+        self.lidar_depth = msg.range
+        self.depth_valid = True
+        
+    
     def transform_coordinate(self, np_array):
         '''
         :param np_array: array of normalized coordinate [y_min x_min y_max x_max]
@@ -154,34 +169,43 @@ class BboxDepth:
                 [detection_boxes, detection_scores, detection_classes, num_detections],
                 feed_dict={image_tensor: frame_expanded})
 
-            index = np.squeeze(scores >= 0.90)
+            index = np.squeeze(scores >= 0.90)  # only look at the BBOX with >= 0.9 confidence
 
-            boxes_toPrint = self.transform_coordinate(np.squeeze(boxes)[index])
+            boxes_high_conf = self.transform_coordinate(np.squeeze(boxes)[index])   # map normalized coordinate to the pixel coordinate
+            classes_high_conf = np.squeeze(classes)[index]
+            scores_high_conf = np.squeeze(scores)[index]
+            class_10_idx = (classes_high_conf == 4) # find class 10
+            bbox_10 = boxes_high_conf[class_10_idx]
+            score_10 = scores_high_conf[class_10_idx]
 
-            if boxes_toPrint.shape[0] != 0:
-                temp = self.estimate_position(boxes_toPrint)
-            else:
-                temp = []
+            if len(bbox_10) == 1:  # expect only "ONE" bounding box of class 10
+                bbox_pos = self.estimate_position(bbox_10)
+                bbox_conf = score_10
+                print("bbox_pos", bbox_pos, bbox_conf)
+                
+                # PUBLISH bbox of class 10 [x_position, y_position, DEPTH]
+                self.bbox_10_pose_msg.position.x = bbox_pos[0][0] 
+                self.bbox_10_pose_msg.position.y = bbox_pos[0][1]
+                self.bbox_10_pose_msg.position.z = bbox_pos[0][2]
+                self.bbox_10_pose_pub.publish(self.bbox_10_pose_msg)
 
-            bbox_pos = np.squeeze(np.array(temp))
-            bbox_conf = np.squeeze(scores)[index]
-            bbox_class = np.squeeze(classes)[index]
+                # PUBLISH confidence of bbox of class 10
+                self.bbox_10_conf_msg.data = bbox_conf
+                self.bbox_10_conf_pub.publish(self.bbox_10_conf_msg)
+             
+            # DEBUG CODE (deleted if not needed)
+            # # printing the detection result on the terminal
+            # num_detection = len(bbox_conf)
+            # if num_detection == 0:
+            #     pass
+            # elif num_detection == 1:
+            #     print('class: ', self.map_class(bbox_class), ' score: ', bbox_conf[0], ' position: ', bbox_pos)
+            #     print("---------------------------------------")
+            # else:
+            #     for i in range(len(bbox_conf)):
+            #         print('class: ', self.map_class(bbox_class[i]), ' score: ', bbox_conf[i], ' position: ', bbox_pos[i])
+            #     print("---------------------------------------")
 
-            # printing the detection result on the terminal
-            num_detection = len(bbox_conf)
-            if num_detection == 0:
-                pass
-            elif num_detection == 1:
-                print('class: ', self.map_class(bbox_class), ' score: ', bbox_conf[0], ' position: ', bbox_pos)
-                print("---------------------------------------")
-            else:
-                for i in range(len(bbox_conf)):
-                    print('class: ', self.map_class(bbox_class[i]), ' score: ', bbox_conf[i], ' position: ', bbox_pos[i])
-                print("---------------------------------------")
-
-            self.bbox_pos_pub.publish(bbox_pos.flatten())
-            self.bbox_conf_pub.publish(bbox_conf.flatten())
-            self.bbox_class_pub.publish(bbox_class.flatten())
 
             # Draw the results of the detection (aka 'visualize the results')
             vis_util.visualize_boxes_and_labels_on_image_array(
@@ -189,24 +213,14 @@ class BboxDepth:
                 np.squeeze(boxes),
                 np.squeeze(classes).astype(np.int32),
                 np.squeeze(scores),
-                category_index,
+                category_index, 
                 use_normalized_coordinates=True,
                 line_thickness=8,
                 min_score_thresh=0.90)
 
             # All the results have been drawn on the frame, so it's time to display it.
             cv2.imshow('Object detector', frame)
-            cv2.waitKey(1)
-
-        except CvBridgeError as e:
-            print(e)
-
-    def depthCallback(self, data):
-
-        try:
-            depth_image_raw = self.bridge.imgmsg_to_cv2(data, "16UC1")
-            # smooth filtering
-            self.depth_image = cv2.blur(depth_image_raw, (5, 5))
+            cv2.waitKey(30)
 
         except CvBridgeError as e:
             print(e)
@@ -221,39 +235,30 @@ class BboxDepth:
             x_RB = int(boundingbox[2])  # right bottom
             y_RB = int(boundingbox[3])
 
-            # Extract bounding box region
-            bbox_depth_arr = self.depth_image[x_LT:x_RB, y_LT:y_RB]
-
-            # nan value -> 0
-            # print(bbox_depth_arr[~np.isnan(bbox_depth_arr)])
-            np.nan_to_num(bbox_depth_arr, copy=False) # nan to 0
-
-            if bbox_depth_arr[np.nonzero(bbox_depth_arr)].size != 0:
-                min_depth = np.min(bbox_depth_arr[np.nonzero(bbox_depth_arr)])
-            else:
-                min_depth = 0
+            if self.depth_valid == False:
+                continue
 
             # Estimate x, y using depth(z)
             x_bb_center = (x_LT+x_RB)/2
             y_bb_center = (y_LT+y_RB)/2
-
+            
             # Convert from 2d pixel coordi to 3d coordi
+            # X = (x-offset_x)Z/fx, Y = (y-offset_y)Z/fy
+            X = (x_bb_center-self.offset_x)*self.lidar_depth/self.focal_x # m scale
+            Y = (y_bb_center-self.offset_y)*self.lidar_depth/self.focal_y # m scale
+            bbox_pos.append([X, Y, self.lidar_depth])
 
-            X = (x_bb_center-self.offset_x)*min_depth/self.focal_x  # mm scale
-            Y = (y_bb_center-self.offset_y)*min_depth/self.focal_y  # mm scale
-
-            # Convert to m scale
-            # X /= 1000.
-            # Y /= 1000.
-            # min_depth /= 1000.
-            bbox_pos.append([X, Y, min_depth])
+            # DEBUG code: delete if not needed
+            # X = (x_bb_center-self.offset_x)*1/self.focal_x # m scale
+            # Y = (y_bb_center-self.offset_y)*1/self.focal_y # m scale
+            # bbox_pos.append([X/10, Y/10, 0.1])
 
         # print("depth", np.array(bbox_pos))
         return bbox_pos
 
 if __name__ == '__main__':
     # code added for using ROS
-    rospy.init_node('bbox_depth')
+    rospy.init_node('bbox_inside_lift')
     bboxdepth = BboxDepth()
 
     rospy.spin()

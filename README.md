@@ -43,3 +43,17 @@ $ roslaunch realsense2_camera rs_rgbd.launch
 ```
 $ rosrun dr_vision pred_light_detection.py
 ```
+
+For lift button detection
+1) Call the node of realsense camera
+```
+$ roslaunch realsense2_camera rs_rgbd.launch
+```
+2) Run lidar sensor (don't forget to check the port name and give permission)
+```
+rosrun teraranger evo _portname:=/dev/ttyACM0 _sensor_type:=Evo_3m
+```
+check the publish topic by
+```
+rostopic echo /teraranger_evo
+```

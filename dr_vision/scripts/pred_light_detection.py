@@ -25,7 +25,7 @@ from object_detection.utils import visualization_utils as vis_util
 
 # Name of the directory containing the object detection module we're using
 rospack = rospkg.RosPack()
-MODEL_NAME = 'inference_graph_ped_light_2'
+MODEL_NAME = 'inference_graph_ped_light_3'
 
 # Grab path to current working directory
 CWD_PATH = os.getcwd()
@@ -35,7 +35,7 @@ CWD_PATH = os.getcwd()
 PATH_TO_CKPT = os.path.join(rospack.get_path('dr_vision'), 'models', MODEL_NAME, 'frozen_inference_graph.pb')
 
 # Path to label map file
-PATH_TO_LABELS = os.path.join(rospack.get_path('dr_vision'), 'models', 'training_ped_light_2', 'labelmap.pbtxt')
+PATH_TO_LABELS = os.path.join(rospack.get_path('dr_vision'), 'models', 'training_ped_light_3', 'labelmap.pbtxt')
 
 # Number of classes the object detector can identify
 NUM_CLASSES = 2
@@ -106,7 +106,7 @@ class light_detector:
                 [detection_boxes, detection_scores, detection_classes, num_detections],
                 feed_dict={image_tensor: frame_expanded})
 	    CONF = 0.98
-            index = np.squeeze(scores >= 0.90)
+            index = np.squeeze(scores >= CONF)
 
             bbox_conf = np.squeeze(scores)[index]
             bbox_class = np.squeeze(classes)[index]

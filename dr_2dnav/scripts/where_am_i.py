@@ -28,11 +28,13 @@ class Robot:
 
    def Traffic_light_callback(self,data):
     pub_traffic = rospy.Publisher('/green', Bool, queue_size=1)
-    if (self.ind>=2000):
-       if (self.light_index>10):
+    if (self.ind>=2000) and (self.ind<2480):
+#       print('green_light')
+       if (self.light_index>5):
           self.green = True
        self.light_index +=1
-       pub_traffic.publish(self.green)    
+       pub_traffic.publish(self.green)
+       print(self.light_index) 
 
    def index_callback(self,data):
     pub = rospy.Publisher('/index', Int32, queue_size=1)
@@ -49,14 +51,14 @@ class Robot:
     scailing_down_factor = 0.5
     scailing_up_factor = 1.5
     if (self.ind >237) and (self.ind <2000):                  #from curve1 to crosswalk
-        data.linear.x=data.linear.x*scailing_down_factor
+        data.linear.x=0.25
         pub_cmd.publish(data)
         print("slower")
     elif (self.ind>=2000) and (self.ind<2280) and (self.green==False):           #Traffic light Red
         data.linear.x=0
         data.angular.z=0
         pub_cmd.publish(data)
-        print("Red light")
+#        print("Red light")
     elif (self.ind>2000) and (self.ind<2280) and (self.green==True):           #Traffic light Green
         pub_cmd.publish(data)
         print("Green light") 

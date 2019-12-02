@@ -50,6 +50,10 @@ category_index = label_map_util.create_category_index(categories)
 
 # Load the Tensorflow model into memory.
 detection_graph = tf.Graph()
+
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+
 with detection_graph.as_default():
     od_graph_def = tf.GraphDef()
     with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
@@ -57,7 +61,7 @@ with detection_graph.as_default():
         od_graph_def.ParseFromString(serialized_graph)
         tf.import_graph_def(od_graph_def, name='')
 
-    sess = tf.Session(graph=detection_graph)
+    sess = tf.Session(graph=detection_graph, config=config)
 
 # Define input and output tensors (i.e. data) for the object detection classifier
 
@@ -88,9 +92,9 @@ def euler_to_quaternion(yaw, pitch, roll):
 class BboxDepth:
     def __init__(self):
         self.bridge = CvBridge()
-        self.depth_sub = rospy.Subscriber("/camera/aligned_depth_to_color/image_raw", Image,
-                                          self.depthCallback, queue_size=1)
-        self.image_sub = rospy.Subscriber("/camera/color/image_rect_color", Image, self.imageCallback)
+        #self.depth_sub = rospy.Subscriber("/camera/aligned_depth_to_color/image_raw", Image,
+                                          #self.depthCallback, queue_size=1)
+        self.image_sub = rospy.Subscriber("/camera/color/image_raw", Image, self.imageCallback)
         self.bbox_pos_pub = rospy.Publisher('bbox_pos', numpy_msg(Floats), queue_size=10)
         self.bbox_conf_pub = rospy.Publisher('bbox_conf', numpy_msg(Floats), queue_size=10)
         self.bbox_class_pub = rospy.Publisher('bbox_class', numpy_msg(Floats), queue_size=10)
@@ -194,7 +198,7 @@ class BboxDepth:
 
             # All the results have been drawn on the frame, so it's time to display it.
             cv2.imshow('Object detector', frame)
-            cv2.waitKey(1)
+            cv2.waitKey(30)
 
         except CvBridgeError as e:
             print(e)

@@ -57,3 +57,23 @@ check the publish topic by
 ```
 rostopic echo /teraranger_evo
 ```
+3) Run the button detector
+```
+$ rosrun dr_vision button_inside_detection.py
+```
+
+UR5 arm
+1) Ping the IP of the robot arm to check the connection
+```
+$ ping 192.168.1.102
+```
+2) Run these commands
+```
+$ roslaunch ur_modern_driver ur5_bringup.launch robot_ip:=192.168.1.102 [reverse_port:=REVERSE_PORT]
+$ roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch
+$ roslaunch ur5_moveit_config moveit_rviz.launch config:=true
+```
+3) Turn on the controller node (need to install moveit_tutorials package, and the code is in our slack)
+```
+$ roslaunch moveit_tutorials move_group_interface_tutorial.launch
+```

@@ -99,8 +99,8 @@ class BboxDepth:
         self.bridge = CvBridge()
         self.lidar_sub = rospy.Subscriber("/teraranger_evo", Range, self.lidarCallback)
         self.image_sub = rospy.Subscriber("/camera/color/image_raw", Image, self.imageCallback)
-        self.bbox_10_pose_pub = rospy.Publisher("/bbox_10_pose", Pose, queue_size=10)
-        self.bbox_10_conf_pub = rospy.Publisher("/bbox_10_conf", Float32, queue_size=10)
+        self.bbox_10_pose_pub = rospy.Publisher("/bbox_pose", Pose, queue_size=10)
+        self.bbox_10_conf_pub = rospy.Publisher("/bbox_conf", Float32, queue_size=10)
 
         self.P_mat = [615.4674072265625, 0.0, 319.95697021484375,
                       0.0, 0.0, 615.7725219726562,

@@ -14,6 +14,10 @@ class Odrive():
         rospy.loginfo("Connected!!")
         self.odrv0.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
         self.odrv0.axis1.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
+        self.odrv0.axis0.controller.config.vel_gain = 0.06
+        self.odrv0.axis0.controller.config.vel_integrator_gain = 0.08
+        self.odrv0.axis1.controller.config.vel_gain = 0.06
+        self.odrv0.axis1.controller.config.vel_integrator_gain = 0.08
         self.odom_pub = rospy.Publisher("odom_encoder", Odometry, queue_size=1)
         rospy.Subscriber("cmd_vel", Twist, self.twist_cb, queue_size=1)
         self.seq = 0

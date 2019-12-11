@@ -5,7 +5,7 @@ from nav_msgs.msg import Odometry
 
 def callback(data):
     rospy.loginfo(data.pose)
-    f = open("path_1F.txt",'a')
+    f = open("path.txt",'a')
     data = str(data.pose.pose.position.x) + ' ' \
         + str(data.pose.pose.position.y) + ' ' \
         + str(data.pose.pose.position.z) + ' ' \

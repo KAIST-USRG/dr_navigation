@@ -4,11 +4,12 @@ from nav_msgs.msg import Path
 from std_msgs.msg import Header
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Pose
+from std_msgs.msg import Bool
 import tf
 
 import actionlib
 from mbf_msgs.msg import ExePathAction
-import mbf_msgs.msg 
+import mbf_msgs.msg
 
 def smach_client(path_msg):
     rospy.loginfo(path_msg)
@@ -20,16 +21,25 @@ def smach_client(path_msg):
     return client.get_result()
 
 def talker():
-    f = open("path_cityhall_once_2.txt", 'r')
+    f = open("path_final.txt", 'r')
+    f_= open("path.txt",'r')
     lines = f.readlines()
+    lines_ = f_.readlines()
     f.close()
+    f_.close()
     posestamp_list = []
+    posestamp_list_ = []
     seq = 0
+    seq_ = 0
 
     header_msg = Header()
     header_msg.seq = seq
     header_msg.stamp = rospy.Time.now()
     header_msg.frame_id = "map"
+    header_msg_ = Header()
+    header_msg_.seq = seq_
+    header_msg_.stamp = rospy.Time.now()
+    header_msg_.frame_id = "map"
 
     for line in lines:
         path_msg = Path()
@@ -38,7 +48,7 @@ def talker():
         value = line.split()
         pose_msg.position.x = float(value[0])
         pose_msg.position.y = float(value[1])
-        pose_msg.position.z = float(value[2])
+        pose_msg.position.z = float(0.0)
         quaternion = (
         float(value[3]),
         float(value[4]),
@@ -60,6 +70,7 @@ def talker():
 
     path_msg.header = header_msg
     path_msg.poses = posestamp_list
+
 
     return path_msg
 

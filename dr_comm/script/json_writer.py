@@ -4,17 +4,22 @@ import rospy
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import NavSatFix
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Int32
 
 class JsonWriter:
     def __init__(self):
         self.file_path = rospy.get_param('~json_path', 'sensor_data.json')
         rospy.loginfo(self.file_path)
 
+        self.index_sub = rospy.Subscriber('index', Int32, self.index_callback)
         self.imu_sub = rospy.Subscriber('imu', Imu, self.imu_callback)
         self.gps_sub = rospy.Subscriber('gps', NavSatFix, self.gps_callback)
         self.odom_sub = rospy.Subscriber('odom', Odometry, self.odom_callback)
         self.timer = rospy.Timer(rospy.Duration(1), self.time_callback)
 
+        self.LAST_INDEX = 1000
+        self.current_status = 'IDLE'
+        self.index_data = Int32()
         self.imu_data = Imu()
         self.gps_data = NavSatFix()
         self.odom_data = Odometry()
@@ -22,6 +27,15 @@ class JsonWriter:
         self.json_data = {}
 
         self.make_json_data()
+
+    def index_callback(self, index_data):
+        self.index_data = index_data
+        if self.index_data == 0:
+            self.current_status = 'Idle'
+        else if self.index_data >= self.LAST_INDEX:
+            self.current_status = 'Arrived'
+        else:
+            self.current_status = 'Shipping'
 
     def imu_callback(self, imu_data):
         self.imu_data = imu_data
@@ -41,6 +55,8 @@ class JsonWriter:
         data = {}
         data['sensors'] = []
         data['sensors'].append({
+            'current_status': self.current_status,
+
             'imu_acc_x': self.imu_data.linear_acceleration.x,
             'imu_acc_y': self.imu_data.linear_acceleration.y,
             'imu_acc_z': self.imu_data.linear_acceleration.z,

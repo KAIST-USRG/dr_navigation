@@ -12,9 +12,9 @@ class Traffic_light_predict:
     rospy.Subscriber("/camera/color/image_raw", Image, self.ImageCallback)
     self.bridge= CvBridge()
     self.green_index=0
-    self.LT = [175,362]
+    self.LT = [175,277]
     self.RB = [228,622]
-    self.threshold = 100
+    self.threshold = 40
     self.common_app=[]
     self.common_app_1=[]
     self.green_light_flag = True

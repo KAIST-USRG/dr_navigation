@@ -35,9 +35,9 @@ dwa:
 # Forward Simulation Parameters
   sim_time: 2.0
   sim_granularity: 0.025
-  vx_samples: 10
+  vx_samples: 30
   vy_samples: 0
-  vth_samples: 20
+  vth_samples: 30
   controller_frequency: 5.0
 
 # Trajectory Scoring Parameters

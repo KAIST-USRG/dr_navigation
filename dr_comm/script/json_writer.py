@@ -11,10 +11,10 @@ class JsonWriter:
         self.file_path = rospy.get_param('~json_path', 'sensor_data.json')
         rospy.loginfo(self.file_path)
 
-        self.index_sub = rospy.Subscriber('index', Int32, self.index_callback)
+        #self.index_sub = rospy.Subscriber('index', Int32, self.index_callback)
         self.imu_sub = rospy.Subscriber('/gx5/imu/data', Imu, self.imu_callback)
         self.gps_sub = rospy.Subscriber('gps', NavSatFix, self.gps_callback)
-        self.odom_sub = rospy.Subscriber('/odom', Odometry, self.odom_callback)
+        self.odom_sub = rospy.Subscriber('/odom_encoder', Odometry, self.odom_callback)
         self.timer = rospy.Timer(rospy.Duration(1), self.time_callback)
 
         self.LAST_INDEX = 1000
@@ -45,6 +45,10 @@ class JsonWriter:
 
     def odom_callback(self, odom_data):
         self.odom_data = odom_data
+        if self.odom_data.twist.twist.linear.x < 0.1:
+            self.current_status = 'Idle'
+        else:
+            self.current_status = 'Shipping'
 
     def time_callback(self, timer):
         self.make_json_data()
@@ -76,10 +80,10 @@ class JsonWriter:
             #'right_wheel_speed': ,
             #'right_wheel_angle': ,
             
-            'odom_x': self.odom_data.pose.pose.position.x,
-            'odom_y': self.odom_data.pose.pose.position.y,
-            'odom_x_speed': self.odom_data.twist.twist.linear.x,
-            'odom_yaw_rate': self.odom_data.twist.twist.angular.z
+            #'odom_x': self.odom_data.pose.pose.position.x,
+            #'odom_y': self.odom_data.pose.pose.position.y,
+            'x_speed': self.odom_data.twist.twist.linear.x,
+            'yaw_rate': self.odom_data.twist.twist.angular.z
         })
         self.json_data = data
         

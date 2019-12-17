@@ -31,11 +31,11 @@ class JsonWriter:
     def index_callback(self, index_data):
         self.index_data = index_data
         if self.index_data == 0:
-            self.current_status = 'Idle'
+            self.current_status = 'idle'
         elif self.index_data >= self.LAST_INDEX:
-            self.current_status = 'Arrived'
+            self.current_status = 'arrived'
         else:
-            self.current_status = 'Shipping'
+            self.current_status = 'transporting'
 
     def imu_callback(self, imu_data):
         self.imu_data = imu_data
@@ -45,10 +45,10 @@ class JsonWriter:
 
     def odom_callback(self, odom_data):
         self.odom_data = odom_data
-        if self.odom_data.twist.twist.linear.x < 0.1:
-            self.current_status = 'Idle'
+        if abs(self.odom_data.twist.twist.linear.x) < 0.01 or abs(self.odom_data.twist.twist.angular.z) < 0.01:
+            self.current_status = 'idle'
         else:
-            self.current_status = 'Shipping'
+            self.current_status = 'transporting'
 
     def time_callback(self, timer):
         self.make_json_data()

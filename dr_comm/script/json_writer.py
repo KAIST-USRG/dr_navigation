@@ -14,7 +14,7 @@ class JsonWriter:
         #self.index_sub = rospy.Subscriber('index', Int32, self.index_callback)
         self.imu_sub = rospy.Subscriber('/gx5/imu/data', Imu, self.imu_callback)
         self.gps_sub = rospy.Subscriber('gps', NavSatFix, self.gps_callback)
-        self.odom_sub = rospy.Subscriber('/odom_encoder', Odometry, self.odom_callback)
+        self.odom_sub = rospy.Subscriber('/odom', Odometry, self.odom_callback)
         self.timer = rospy.Timer(rospy.Duration(1), self.time_callback)
 
         self.LAST_INDEX = 1000

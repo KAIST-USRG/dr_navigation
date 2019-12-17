@@ -2,7 +2,7 @@
   <node pkg="dr_comm" type="json_writer.py" name="json_writer" output="screen" clear_params="true">
     <remap from="imu" to="gx5/imu/data" />
     <remap from="gps" to="ublo_gps/fix" />
-    <remap from="odom" to="odom" />
+    <remap from="odom" to="odom_encoder" />
     <param name="json_path" value="$(find dr_comm)/json/sensor_data.json" />
   </node>
 

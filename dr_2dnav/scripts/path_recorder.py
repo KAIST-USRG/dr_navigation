@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
-from nav_msgs.msg import Odometry
-#from geometry_msgs.msg import PoseWithCovarianceStamped
+#from nav_msgs.msg import Odometry
+from geometry_msgs.msg import PoseWithCovarianceStamped
 
 def callback(data):
     rospy.loginfo(data.pose)
@@ -18,8 +18,8 @@ def callback(data):
     
 def listener():
     rospy.init_node('listener', anonymous=True)
-    rospy.Subscriber("/odom", Odometry, callback)
-    #rospy.Subscriber("/amcl_pose", PoseWithCovarianceStamped, callback)
+    #rospy.Subscriber("/odom", Odometry, callback)
+    rospy.Subscriber("/initialpose", PoseWithCovarianceStamped, callback)
     rospy.spin()
 
 if __name__ == '__main__':

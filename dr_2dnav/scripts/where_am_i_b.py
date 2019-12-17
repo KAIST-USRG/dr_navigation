@@ -7,6 +7,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
 from sensor_msgs.msg import Imu
 from std_msgs.msg import Float32
+import tf
 
 class Robot:
    rospy.init_node('Cmd_publisher', anonymous=True)
@@ -21,10 +22,13 @@ class Robot:
     self.moveUp_3_flag_infront_count = 0
     self.moveUp_4_flag_infront_count = 0
     self.moveToDefault_flag_infront=0
+    self.yaw = 10000
     self.moveUp_1_flag = False
     self.moveUp_2_flag = False
     self.moveUp_3_flag = False
     self.moveUp_4_flag = False
+    self.clear = False
+    self.stop = False
     self.go_1 = False
     self.go_2 = False
     self.green = False
@@ -70,6 +74,16 @@ class Robot:
    def index_callback(self,data):
     pub = rospy.Publisher('/index', Int32, queue_size=1)
     D = np.zeros((self.M.shape[0],1))
+    q_w = data.pose.pose.orientation.w
+    q_x = data.pose.pose.orientation.x
+    q_y = data.pose.pose.orientation.y
+    q_z = data.pose.pose.orientation.z
+    quaternion_original=(q_x,
+                         q_y,
+                         q_z,
+                         q_w)
+    euler = tf.transformations.euler_from_quaternion(quaternion_original)
+    self.yaw   = euler[2]    
     for i in range(self.M.shape[0]):
         D[i] = np.sqrt((self.M[i,0]-data.pose.pose.position.x)**2+(self.M[i,1]-data.pose.pose.position.y)**2)
     self.ind = np.argmin(D)
@@ -144,12 +158,36 @@ class Robot:
         data.angular.z=data.angular.z
         pub_cmd.publish(data)
         print("slower")
-    elif (self.ind >=4491) and (self.ind) <5083:                #elevator
+    elif (self.ind >=4491) and (self.ind) <=4837:                #elevator
 #        data.linear.x=data.linear.x*scailing_indoor_factor
         data.linear.x=0.15
-        data.angular.z=data.angular.z	
+        data.angular.z=data.angular.z*2	
         pub_cmd.publish(data)
         print("slower")
+    elif (self.ind >=4838) and (self.ind <=5017) and (self.clear==False):                #elevator
+#        data.linear.x=data.linear.x*scailing_indoor_factor
+        data.linear.x=0.1
+        data.angular.z = data.angular.z*0.3	
+        pub_cmd.publish(data)
+        if self.ind == 5017:
+          self.clear=True
+        print("slower")
+    elif (self.ind >=5010)and (self.ind <=5018) and (self.clear==True) and self.stop==False:                #elevator
+#        data.linear.x=data.linear.x*scailing_indoor_factor
+        data.linear.x = 0.0
+        data.angular.z = -0.3
+        if np.sqrt((self.yaw-(-2.94537))**2) >0.1:
+         pub_cmd.publish(data)
+        else:
+         self.stop=True
+        print(self.yaw)
+#        print("slower")
+    elif (self.ind >=5010)and (self.ind <=5018) and (self.clear==True) and self.stop==True:                #elevator
+#        data.linear.x=data.linear.x*scailing_indoor_factor
+        data.linear.x=0.0
+        data.angular.z = 0.0
+        pub_cmd.publish(data)
+#        print("slower")
 #    elif self.ind >= 4684 and self.ind<4691 and self.moveUp_1_flag == False and self.moveUp_2_flag == False:
 #        data.linear.x = 0
 #        data.linear.z = 0
@@ -188,10 +226,10 @@ class Robot:
 #       pub_cmd.publish(data)
 #        print("slower")
     else:
-#        data.linear.x=data.linear.x
-#        data.angular.z=data.angular.z*2
-	data.linear.x = 0
-        data.angular.z=0
+        data.linear.x=data.linear.x
+        data.angular.z=data.angular.z*2
+#	data.linear.x = 0
+#        data.angular.z=0
         pub_cmd.publish(data)
         print("normal")
 

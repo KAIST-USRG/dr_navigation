@@ -12,9 +12,9 @@ class JsonWriter:
         rospy.loginfo(self.file_path)
 
         self.index_sub = rospy.Subscriber('index', Int32, self.index_callback)
-        self.imu_sub = rospy.Subscriber('imu', Imu, self.imu_callback)
+        self.imu_sub = rospy.Subscriber('/gx5/imu/data', Imu, self.imu_callback)
         self.gps_sub = rospy.Subscriber('gps', NavSatFix, self.gps_callback)
-        self.odom_sub = rospy.Subscriber('odom', Odometry, self.odom_callback)
+        self.odom_sub = rospy.Subscriber('/odom', Odometry, self.odom_callback)
         self.timer = rospy.Timer(rospy.Duration(1), self.time_callback)
 
         self.LAST_INDEX = 1000
@@ -32,7 +32,7 @@ class JsonWriter:
         self.index_data = index_data
         if self.index_data == 0:
             self.current_status = 'Idle'
-        else if self.index_data >= self.LAST_INDEX:
+        elif self.index_data >= self.LAST_INDEX:
             self.current_status = 'Arrived'
         else:
             self.current_status = 'Shipping'
@@ -47,7 +47,6 @@ class JsonWriter:
         self.odom_data = odom_data
 
     def time_callback(self, timer):
-        rospy.loginfo('time_callback')
         self.make_json_data()
         self.write_file(self.file_path)
 

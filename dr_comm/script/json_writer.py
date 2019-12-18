@@ -9,7 +9,6 @@ from std_msgs.msg import Int32
 class JsonWriter:
     def __init__(self):
         self.file_path = rospy.get_param('~json_path', 'sensor_data.json')
-        rospy.loginfo(self.file_path)
 
         #self.index_sub = rospy.Subscriber('index', Int32, self.index_callback)
         self.imu_sub = rospy.Subscriber('/gx5/imu/data', Imu, self.imu_callback)
@@ -27,6 +26,7 @@ class JsonWriter:
         self.json_data = {}
 
         self.make_json_data()
+        rospy.loginfo(self.file_path)
 
     def index_callback(self, index_data):
         self.index_data = index_data
@@ -45,7 +45,7 @@ class JsonWriter:
 
     def odom_callback(self, odom_data):
         self.odom_data = odom_data
-        if abs(self.odom_data.twist.twist.linear.x) < 0.01 or abs(self.odom_data.twist.twist.angular.z) < 0.01:
+        if abs(self.odom_data.twist.twist.linear.x) < 0.01 and abs(self.odom_data.twist.twist.angular.z) < 0.01:
             self.current_status = 'idle'
         else:
             self.current_status = 'transporting'

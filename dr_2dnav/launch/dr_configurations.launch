@@ -3,6 +3,7 @@
   <include file="$(find dr_2dnav)/launch/include/lidar.launch"/>
   <include file="$(find dr_2dnav)/launch/include/box_filter_droid_example.launch"/>
   <include file="$(find dr_2dnav)/launch/include/imu.launch"/>
+  <include file="$(find dr_comm)/launch/dr_status_writer.launch"/>
   <!--include file="$(find dr_2dnav)/launch/include/gps.launch"/-->
   <!--include file="$(find dr_2dnav)/launch/include/omoros_core.launch" /-->
   <include file="$(find dr_driver)/launch/toggle_joy.launch" />

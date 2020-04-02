@@ -1,5 +1,5 @@
-obstacle_range: 3.0
-raytrace_range: 3.5
+obstacle_range: 15.0
+raytrace_range: 15.0
 
 #footprint: [[-0.5, -0.555], [-0.5, 0.555], [0.5, 0.555], [0.5, -0.555]]
 footprint: [[-0.5, -0.35], [-0.5, 0.35], [0.5, 0.35], [0.5, -0.35]]

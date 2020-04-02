@@ -14,9 +14,9 @@ import mbf_msgs.msg
 def smach_client(path_msg):
     client = actionlib.SimpleActionClient('move_base_flex/exe_path', ExePathAction)
     client.wait_for_server()
-    goal = mbf_msgs.msg.ExePathGoal(path=path_msg, controller="dwa")
+    #goal = mbf_msgs.msg.ExePathGoal(path=path_msg, controller="dwa")
     #goal = mbf_msgs.msg.ExePathGoal(path=path_msg)
-    client.send_goal(goal)
+    client.send_goal(path_msg)
     client.wait_for_result()
     return client.get_result()
 
@@ -25,7 +25,7 @@ if __name__ == '__main__':
         rospy.init_node('path_action_client', anonymous=True)
         pub = rospy.Publisher('/path', Path, queue_size=1)
         time.sleep(0.5)
-        f = open("KI_1F_L_path_2.txt", 'r')
+        f = open("path_final.txt", 'r')
         lines = f.readlines()
         f.close()
         posestamp_list = []

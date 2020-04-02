@@ -10,4 +10,4 @@ global_costmap:
 
   static_map: false
   #static_map: true
-  rolling_window: false 
+  rolling_window: true 

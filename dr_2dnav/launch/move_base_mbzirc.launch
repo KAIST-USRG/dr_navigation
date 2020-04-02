@@ -1,0 +1,86 @@
+<launch>
+
+  <arg name="gmapping" default="true" />
+
+  <!--node name="map_server" pkg="map_server" type="map_server" 
+                     args="$(find dr_2dnav)/map/cityhall_1F/cityhall_2.yaml"/-->
+                    <!--args="$(find dr_2dnav)/map/KI_1F/map3.yaml"/-->
+
+  <!-- <include file="$(find dr_2dnav)/launch/include/map_server.launch"/> -->
+
+  <!-- <include file="$(find dr_2dnav)/launch/include/amcl.launch"/> -->
+
+  <!-- Gmapping -->
+  <!-- <include if="$(arg gmapping)" file="$(find ceres_navigation)/launch/gmapping.launch" /> -->
+
+    <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+      <remap from="scan" to="scan_raw"/>
+      <param name="map_update_interval" value="5.0"/>
+      <param name="maxUrange" value="16.0"/>
+      <param name="sigma" value="0.05"/>
+      <param name="kernelSize" value="1"/>
+      <param name="lstep" value="0.05"/>
+      <param name="astep" value="0.05"/>
+      <param name="iterations" value="5"/>
+      <param name="lsigma" value="0.075"/>
+      <param name="ogain" value="3.0"/>
+      <param name="lskip" value="0"/>
+      <param name="srr" value="0.1"/>
+      <param name="srt" value="0.2"/>
+      <param name="str" value="0.1"/>
+      <param name="stt" value="0.2"/>
+      <param name="linearUpdate" value="1.0"/>
+      <param name="angularUpdate" value="0.5"/>
+      <param name="temporalUpdate" value="3.0"/>
+      <param name="resampleThreshold" value="0.5"/>
+      <param name="particles" value="30"/>
+      <param name="xmin" value="-50.0"/>
+      <param name="ymin" value="-50.0"/>
+      <param name="xmax" value="50.0"/>
+      <param name="ymax" value="50.0"/>
+      <param name="delta" value="0.05"/>
+      <param name="llsamplerange" value="0.01"/>
+      <param name="llsamplestep" value="0.01"/>
+      <param name="lasamplerange" value="0.005"/>
+      <param name="lasamplestep" value="0.005"/>
+    </node>
+
+
+  <arg name="cmd_vel_topic" default="/cmd_vel" />
+  <arg name="odom_topic" default="odom" />
+
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+
+    <param name="base_global_planner" value="navfn/NavfnROS" />
+    <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /> -->
+    <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS" />
+    <!--param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS" /-->
+    <rosparam file="$(find dr_2dnav)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find dr_2dnav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find dr_2dnav)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find dr_2dnav)/param/global_costmap_params.yaml" command="load" />
+    <!-- <rosparam file="$(find dr_2dnav)/param/move_base_params.yaml" command="load" /> -->
+    <!-- <rosparam file="$(find dr_2dnav)/param/dwa_local_planner_params.yaml" command="load" /> -->
+    <rosparam file="$(find dr_2dnav)/param/base_local_planner_params.yaml" command="load"/>
+
+    <param name="global_costmap/global_frame" value="map"/>
+    <param name="global_costmap/robot_base_frame" value="base_link"/>
+    <!-- <param name="global_costmap/laser_scan_sensor/sensor_frame" value="/$(arg namespace)/base_laser_link"/> -->
+    <!-- <param name="global_costmap/laser_scan_sensor/topic" value="/$(arg namespace)/base_scan"/> -->
+    <param name="global_costmap/laser_scan_sensor/sensor_frame" value="velodyne"/>
+    <param name="global_costmap/laser_scan_sensor/topic" value="scan_raw"/>    
+    <param name="local_costmap/global_frame" value="odom"/>
+    <param name="local_costmap/robot_base_frame" value="base_link"/>
+    <param name="local_costmap/laser_scan_sensor/sensor_frame" value="velodyne"/>
+    <!-- <param name="local_costmap/laser_scan_sensor/topic" value="/$(arg namespace)/base_scan"/> -->
+    <!-- <param name="local_costmap/obstacle_layer/laser_scan_sensor/topic" value="/$(arg namespace)/base_scan"/> -->
+    <param name="local_costmap/laser_scan_sensor/topic" value="scan_raw"/>
+    <param name="local_costmap/obstacle_layer/laser_scan_sensor/topic" value="scan_raw"/>
+  </node>
+
+  <!-- <node name="move_base_rviz" pkg="rviz" type="rviz" args="-d $(find dr_2dnav)/rviz/dr_2dnav_sim.rviz"/> -->
+
+</launch> 

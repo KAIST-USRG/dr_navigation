@@ -1,0 +1,18 @@
+obstacle_range: 30
+raytrace_range: 2.5
+robot_base_frame: base_footprint
+#footprint: [[-0.5, -0.555], [-0.5, 0.555], [0.5, 0.555], [0.5, -0.555]]
+#footprint: [[-0.5, -0.35], [-0.5, 0.35], [0.5, 0.35], [0.5, -0.35]]
+footprint: [[-0.44, -0.33], [-0.44, 0.33], [0.12, 0.33], [0.12, -0.33]]
+footprint_padding: 0.01
+#robot_radius: 0.17
+update_frequency: 1.0
+publish_frequency: 4.0
+transform tolerance: 0.5
+
+obstacles_laser:
+   observation_sources: point_cloud
+   point_cloud: {data_type: PointCloud2, sensor_frame: velodyne, clearing: true, marking: true, topic: velodyne_points}
+
+inflation:
+   inflation_radius: 1.0

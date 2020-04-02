@@ -11,20 +11,27 @@ import math
 class Odrive():
     def __init__(self):
         self.odrv0 = odrive.find_any()
-        rospy.loginfo("Connected!!")
-        self.odrv0.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
+        rospy.loginfo("Connected!")
+        self.current_status = 'BOOTUP'
+        self.odrv0.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL 
         self.odrv0.axis1.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
         self.odrv0.axis0.controller.config.vel_gain = 0.06
         self.odrv0.axis0.controller.config.vel_integrator_gain = 0.08
         self.odrv0.axis1.controller.config.vel_gain = 0.06
         self.odrv0.axis1.controller.config.vel_integrator_gain = 0.08
         self.odom_pub = rospy.Publisher("odom_encoder", Odometry, queue_size=1)
-        rospy.Subscriber("cmd_vel", Twist, self.twist_cb, queue_size=1)
+        rospy.Subscriber("/cmd_vel", Twist, self.twist_cb, queue_size=1)
         self.seq = 0
 
         self.ROBOT_WIDTH = 0.560
         self.WHEEL_RADIUS = 0.127
         self.GAIN = 6.92
+
+        self.left_rpm = 0.0
+        self.right_rpm = 0.0
+
+        self.stop_counter = 0
+        self.current_status = 'ACTIVE'
 
     def twist_cb(self, cmd_vel):
     
@@ -33,15 +40,28 @@ class Odrive():
     
         self.left_rpm = (cmd_vel.linear.x - cmd_vel.angular.z*self.ROBOT_WIDTH/2) / (self.WHEEL_RADIUS * 0.10472) * self.GAIN
         self.right_rpm = (cmd_vel.linear.x + cmd_vel.angular.z*self.ROBOT_WIDTH/2) / (self.WHEEL_RADIUS * 0.10472) * self.GAIN
+
+        if self.stop_counter > 500:
+            self.current_status = 'SLEEP'
+        else:
+            self.current_status = 'ACTIVE'
+
+        if self.current_status == 'SLEEP':
+            self.odrv0.axis0.requested_state = AXIS_STATE_IDLE 
+            self.odrv0.axis1.requested_state = AXIS_STATE_IDLE
+        elif self.current_status == 'ACTIVE':
+            self.odrv0.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL 
+            self.odrv0.axis1.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
+            self.odrv0.axis0.controller.vel_setpoint = self.left_rpm
+            self.odrv0.axis1.controller.vel_setpoint = self.right_rpm 
     
-        self.odrv0.axis0.controller.vel_setpoint = self.left_rpm
-        self.odrv0.axis1.controller.vel_setpoint = self.right_rpm 
-    
-        rospy.logdebug(str(self.left_rpm) + ' '\
-                      + str(self.right_rpm) + ' '\
-                      + str(cmd_vel.linear.x) + ' '\
-                      + str(cmd_vel.linear.y) + ' '\
-                      + str(cmd_vel.angular.z))
+            rospy.logdebug(str(self.left_rpm) + ' '\
+                          + str(self.right_rpm) + ' '\
+                          + str(cmd_vel.linear.x) + ' '\
+                          + str(cmd_vel.linear.y) + ' '\
+                          + str(cmd_vel.angular.z))
+        else:
+            pass
     
     def timer_cb(self, event=None):
         self.odom_msg = Odometry()
@@ -53,6 +73,10 @@ class Odrive():
         self.right_v = self.odrv0.axis1.encoder.vel_estimate / self.GAIN * self.WHEEL_RADIUS * 0.10472
         self.odom_msg.twist.twist.linear.x = (self.left_v + self.right_v)/2
         self.odom_pub.publish(self.odom_msg)
+        if abs(self.left_rpm) < 0.01 and abs(self.right_rpm) < 0.01:
+            self.stop_counter += 1
+        else:
+            self.stop_counter = 0
 
 if __name__ == '__main__':
     rospy.init_node('diff_robot_control', anonymous=True)

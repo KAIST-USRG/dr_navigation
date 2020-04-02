@@ -30,7 +30,7 @@
   <node pkg="dr_driver" type="dr_driver.py" name="dr_driver" output="screen"/>
   <node pkg="tf" type="static_transform_publisher" name="footprint_baselink" args="0 0 0.1 0 0 0 /base_footprint /base_link 10" />
   <node pkg="tf" type="static_transform_publisher" name="baselink_imu" args="0 0 1.1 0 0 0 /base_link /gx5_link 10" />
-  <node pkg="tf" type="static_transform_publisher" name="baselink_velodyne" args="0 0 1.3 -1.57 0 0 /base_link /velodyne 10" />
+  <node pkg="tf" type="static_transform_publisher" name="baselink_velodyne" args="0 0 0.9 0 0 0 /base_link /velodyne 10" />
   <!--node pkg="tf" type="static_transform_publisher" name="baselink_velodyne" args="0 0 1.3 0 0 0 /base_link /velodyne 10" /-->
 
 </launch>

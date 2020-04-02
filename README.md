@@ -1,5 +1,12 @@
 # dr_navigation
 
+## Launch in cityhall 20200402
+1. roslaunch dr_2dnav dr_configurations.launch 
+2. roslaunch dr_2dnav mbf_predefined_path.launch 
+3. rosrun dr_2dnav where_am_i_b.py 
+4. rosrun dr_2dnav path_action_client.py
+5. rosrun dr_vision pred_light_detection_b.py 
+
 ## Prerequirements
 1. SMACH
 2. omoros
